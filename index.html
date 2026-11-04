@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eiju Ito | AI & Systems Engineering HUD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+  <!-- HUD Header -->
+  <header class="hud-header">
+    <div class="container hud-nav">
+      <a href="index.html" class="logo-hud">
+        <span>&lt;EIJU_ITO /&gt;</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <span class="status-badge">
+          <span class="status-dot"></span> NEURAL CORE ONLINE
+        </span>
+        <nav class="nav-links">
+          <a href="#skills" class="active">Skills</a>
+          <a href="repo/index.html">/repo Vault</a>
+          <a href="docs/plano-projeto.md">Docs</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1 class="hero-title">Engenharia de Sistemas, IoT & Inteligência Artificial</h1>
+      <p class="hero-subtitle">
+        Desenvolvimento corporativo, agentes inteligentes, automação com microcontroladores e sistemas distribuídos integrados ao mundo físico.
+      </p>
+
+      <!-- Terminal Console Box -->
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <span class="terminal-title">operator@eijuito-os: ~</span>
+        </div>
+        <div class="terminal-body">
+          <p><span class="term-cmd">&gt; system.init()</span></p>
+          <p class="term-output">[OK] Initializing Neural Core and Agent Cluster...</p>
+          <p class="term-output">[OK] Loading Models: <span class="term-highlight">Gemini Pro/Flash</span>, <span class="term-highlight">Claude 3.5 Sonnet</span>, <span class="term-highlight">Hermes MCP</span></p>
+          <p class="term-output">[OK] Initializing Runtimes: <span class="term-highlight">JAVA (JVM Ecosystem)</span>, TypeScript, Python, MQL5 Engine</p>
+          <p class="term-output">[OK] IoT &amp; Embedded Bus: <span class="term-highlight">ESP32 / ESP8266 / Arduino / Raspberry Pi</span> linked to Smart Ecosystems</p>
+          <p><span class="term-cmd">&gt; status --vault</span></p>
+          <p class="term-success">&#x2714; Public Artifact Vault (/repo) synced and ready for deployment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Matrix Section -->
+    <section id="skills">
+      <h2 class="section-title">Matriz Tecnológica & Especialidades</h2>
+      
+      <div class="skills-matrix">
+        
+        <!-- IA & Agentes -->
+        <div class="hud-card">
+          <div class="card-tag">Inteligência Artificial</div>
+          <h3>IA & Agentes Autônomos</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Orquestração de modelos de ponta, sistemas de contexto multimodal, RAG e integração por protocolo de contexto de modelo.
+          </p>
+          <div class="badge-cloud">
+            <span class="tech-badge lead">Gemini</span>
+            <span class="tech-badge lead">Claude</span>
+            <span class="tech-badge lead">Hermes MCP</span>
+            <span class="tech-badge special">Model Context Protocol</span>
+            <span class="tech-badge">LangChain / LangGraph</span>
+            <span class="tech-badge">RAG & Embeddings</span>
+            <span class="tech-badge">Autonomous Multi-Agent</span>
+            <span class="tech-badge">Prompt Engineering</span>
+          </div>
+        </div>
+
+        <!-- Linguagens & Runtime -->
+        <div class="hud-card">
+          <div class="card-tag">Desenvolvimento</div>
+          <h3>Linguagens & Runtime</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Sólida fundação em linguagens orientadas a objetos de escala corporativa, sistemas de tipagem estática e scripts de automação.
+          </p>
+          <div class="badge-cloud">
+            <span class="tech-badge lead">JAVA</span>
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">TypeScript</span>
+            <span class="tech-badge">JavaScript (Node.js)</span>
+            <span class="tech-badge">C / C++ (Embedded)</span>
+            <span class="tech-badge">SQL</span>
+            <span class="tech-badge">Bash / PowerShell</span>
+          </div>
+        </div>
+
+        <!-- Engenharia & Cloud -->
+        <div class="hud-card">
+          <div class="card-tag">Infraestrutura & Algoritmos</div>
+          <h3>Engenharia, Cloud & Trading</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Automação financeira, pipelines de CI/CD, esteiras de distribuição de código e arquitetura de nuvem escalável.
+          </p>
+          <div class="badge-cloud">
+            <span class="tech-badge lead">MQL5 (MetaTrader 5)</span>
+            <span class="tech-badge special">GitHub Actions CI/CD</span>
+            <span class="tech-badge">Docker & Containers</span>
+            <span class="tech-badge">Algorithmic Trading & EAs</span>
+            <span class="tech-badge">REST & gRPC APIs</span>
+            <span class="tech-badge">Microservices</span>
+            <span class="tech-badge">Linux DevOps</span>
+          </div>
+        </div>
+
+        <!-- Eletrônica, IoT & Automação Residencial -->
+        <div class="hud-card">
+          <div class="card-tag">Hardware & Embedded</div>
+          <h3>Eletrônica, IoT & Automação</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Desenvolvimento de firmware, computação de borda (edge), prototipagem eletrônica e integração com ecossistemas de automação inteligente.
+          </p>
+          <div class="badge-cloud">
+            <span class="tech-badge lead">Eletrônica</span>
+            <span class="tech-badge lead">Arduino</span>
+            <span class="tech-badge lead">ESP32</span>
+            <span class="tech-badge lead">ESP8266</span>
+            <span class="tech-badge special">Raspberry Pi</span>
+            <span class="tech-badge special">Alexa</span>
+            <span class="tech-badge special">Google Assistant</span>
+            <span class="tech-badge special">Home Assistant</span>
+            <span class="tech-badge">Mijia (Xiaomi)</span>
+            <span class="tech-badge">SonOff (eWeLink / Tasmota)</span>
+            <span class="tech-badge">Zigbee / Z-Wave</span>
+            <span class="tech-badge">MQTT & WebSockets</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Artifacts Vault Banner -->
+    <section class="vault-banner">
+      <div class="vault-info">
+        <h3>Repositório Central de Artefatos Públicos (/repo)</h3>
+        <p>
+          Acesse a distribuição pública de builds, firmwares, scripts, releases e artefatos gerados a partir de repositórios privados em ambiente protegido.
+        </p>
+      </div>
+      <a href="repo/index.html" class="btn-cyber">
+        Explorar Vault /repo &rarr;
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Eiju Ito — GitHub Pages Futurista &middot; Sistema Operacional de Distribuição</p>
+    </div>
+  </footer>
+
+</body>
+</html>

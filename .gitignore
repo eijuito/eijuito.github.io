@@ -1,0 +1,11 @@
+# Git Ignore para GitHub Pages
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Pastas de IDE e agentes locais
+.idea/
+.vscode/
+node_modules/
+

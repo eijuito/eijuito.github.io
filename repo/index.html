@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vault de Artefatos | Eiju Ito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+  <!-- HUD Header -->
+  <header class="hud-header">
+    <div class="container hud-nav">
+      <a href="../index.html" class="logo-hud">
+        <span>&lt;EIJU_ITO /&gt;</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <span class="status-badge">
+          <span class="status-dot"></span> VAULT SYNCED
+        </span>
+        <nav class="nav-links">
+          <a href="../index.html#skills">Skills</a>
+          <a href="index.html" class="active">/repo Vault</a>
+          <a href="../docs/plano-projeto.md">Docs</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 2.5rem;">
+    <div style="margin-bottom: 2rem;">
+      <h1 class="hero-title" style="font-size: 2.2rem;">Public Artifact Vault (/repo)</h1>
+      <p class="hero-subtitle">
+        Catálogo central de artefatos, distribuições e binários gerados a partir de repositórios privados.
+      </p>
+    </div>
+
+    <section class="hud-card" style="margin-bottom: 3rem;">
+      <div class="card-tag">Catálogo Ativo</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">Repositórios Disponíveis</h2>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Repositório</th>
+              <th>Finalidade & Artefatos</th>
+              <th>Status</th>
+              <th>Acesso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color: var(--cyan-glow); font-family: var(--font-mono);">template-repo</strong></td>
+              <td>Modelo estrutural para integração e publicação de novos repositórios privados.</td>
+              <td><span style="color: var(--green-glow); font-family: var(--font-mono); font-size: 0.8rem;">[READY]</span></td>
+              <td><a class="btn-download" href="template-repo/index.html">Abrir &rarr;</a></td>
+            </tr>
+            <!-- Novos repositórios serão cadastrados aqui -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Eiju Ito — GitHub Pages Futurista &middot; Artifact Vault</p>
+    </div>
+  </footer>
+
+</body>
+</html>
