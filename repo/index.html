@@ -77,6 +77,61 @@
       </p>
     </div>
 
+    <!-- Seção de Melhores Práticas, Nomenclatura e Políticas do Repositório -->
+    <section class="hud-card" style="margin-bottom: 2.5rem; border-color: rgba(0, 240, 255, 0.35);">
+      <div class="card-tag">Diretrizes &amp; Governança do Vault</div>
+      <h2 style="font-size: 1.35rem; color: #fff; margin-bottom: 1rem;">Padrões de Nomenclatura, Integridade &amp; Políticas de Uso</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+        
+        <!-- Bloco Nomenclatura -->
+        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 1.25rem;">
+          <h3 style="font-size: 1.05rem; color: var(--cyan-glow); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            📦 1. Nomenclatura Semântica
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Os artefatos seguem o padrão previsível SemVer com identificação de plataforma e arquitetura de destino:
+          </p>
+          <pre style="padding: 0.6rem; font-size: 0.78rem; margin-bottom: 0.75rem;"><code>&lt;projeto&gt;_&lt;versao&gt;_&lt;plataforma&gt;_&lt;arch&gt;.&lt;ext&gt;</code></pre>
+          <ul style="font-size: 0.8rem; color: #cbd5e1; list-style-position: inside; line-height: 1.6;">
+            <li><strong>IoT / Firmware:</strong> <code>sensor_v1.0.3_esp32.bin</code></li>
+            <li><strong>Java Enterprise:</strong> <code>service_v2.1.0_all.jar</code></li>
+            <li><strong>Trading MQL5:</strong> <code>scalper_v3.2_mt5_x64.ex5</code></li>
+          </ul>
+        </div>
+
+        <!-- Bloco Verificação SHA-256 -->
+        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 1.25rem;">
+          <h3 style="font-size: 1.05rem; color: var(--green-glow); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            🔒 2. Integridade &amp; Checksums
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Cada binário possui seu hash SHA-256 criptográfico gerado automaticamente no build para auditoria contra corrupção ou adulteração:
+          </p>
+          <div style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.6;">
+            <p><strong>PowerShell:</strong></p>
+            <pre style="padding: 0.5rem; font-size: 0.75rem; margin-bottom: 0.5rem;"><code>Get-FileHash .\arquivo.bin -Algorithm SHA256</code></pre>
+            <p><strong>Linux / macOS:</strong></p>
+            <pre style="padding: 0.5rem; font-size: 0.75rem;"><code>sha256sum -c SHA256SUMS</code></pre>
+          </div>
+        </div>
+
+        <!-- Bloco Políticas do Repositório -->
+        <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 1.25rem;">
+          <h3 style="font-size: 1.05rem; color: #d8b4fe; margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            🛡️ 3. Políticas &amp; Governança
+          </h3>
+          <ul style="font-size: 0.82rem; color: #cbd5e1; list-style-position: inside; line-height: 1.7;">
+            <li><strong>Imutabilidade:</strong> Versões publicadas nunca são sobrescritas; correções incrementam o patch SemVer.</li>
+            <li><strong>Zero Leaks:</strong> Proibição estrita de credenciais, senhas Wi-Fi, tokens ou chaves privadas nos artefatos públicos.</li>
+            <li><strong>Crawler Dinâmico:</strong> Pastas e arquivos adicionados em <code>repo/</code> são indexados automaticamente via GitHub Actions.</li>
+            <li><strong>Limites de Volume:</strong> Arquivos &le; 50 MB via Git; volumes maiores são vinculados via GitHub Releases.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Barra de busca instantânea -->
     <input type="text" id="filter-input" class="search-box" placeholder="Filtrar por nome de repositório, extensão (.bin, .jar, .ex5) ou arquivo...">
 
