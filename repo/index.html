@@ -3,11 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vault de Artefatos | Eiju Ito</title>
+  <title>Vault de Artefatos &amp; Checksums | Eiju Ito</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    .hash-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .hash-badge:hover {
+      color: var(--cyan-glow);
+      border-color: var(--cyan-glow);
+    }
+    .search-box {
+      width: 100%;
+      background: rgba(13, 19, 33, 0.85);
+      border: 1px solid var(--border-neon);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      outline: none;
+    }
+    .search-box:focus {
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+  </style>
 </head>
 <body>
 
@@ -18,13 +57,13 @@
         <span>&lt;EIJU_ITO /&gt;</span>
       </a>
       <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <span class="status-badge">
-          <span class="status-dot"></span> VAULT SYNCED
+        <span class="status-badge" id="crawler-status">
+          <span class="status-dot"></span> VAULT CRAWLER READY
         </span>
         <nav class="nav-links">
           <a href="../index.html#skills">Skills</a>
           <a href="index.html" class="active">/repo Vault</a>
-          <a href="../docs/plano-projeto.md">Docs</a>
+          <a href="../docs/melhores-praticas-repositorio-artefatos.md">Políticas &amp; Padrões</a>
         </nav>
       </div>
     </div>
@@ -32,45 +71,150 @@
 
   <main class="container" style="padding-top: 2.5rem;">
     <div style="margin-bottom: 2rem;">
-      <h1 class="hero-title" style="font-size: 2.2rem;">Public Artifact Vault (/repo)</h1>
+      <h1 class="hero-title" style="font-size: 2.2rem;">Public Artifact Vault &amp; Checksums</h1>
       <p class="hero-subtitle">
-        Catálogo central de artefatos, distribuições e binários gerados a partir de repositórios privados.
+        Catálogo dinâmico de artefatos com integridade criptográfica SHA-256 e detecção automatizada de repositórios.
       </p>
     </div>
 
-    <section class="hud-card" style="margin-bottom: 3rem;">
-      <div class="card-tag">Catálogo Ativo</div>
-      <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">Repositórios Disponíveis</h2>
+    <!-- Barra de busca instantânea -->
+    <input type="text" id="filter-input" class="search-box" placeholder="Filtrar por nome de repositório, extensão (.bin, .jar, .ex5) ou arquivo...">
 
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Repositório</th>
-              <th>Finalidade & Artefatos</th>
-              <th>Status</th>
-              <th>Acesso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong style="color: var(--cyan-glow); font-family: var(--font-mono);">template-repo</strong></td>
-              <td>Modelo estrutural para integração e publicação de novos repositórios privados.</td>
-              <td><span style="color: var(--green-glow); font-family: var(--font-mono); font-size: 0.8rem;">[READY]</span></td>
-              <td><a class="btn-download" href="template-repo/index.html">Abrir &rarr;</a></td>
-            </tr>
-            <!-- Novos repositórios serão cadastrados aqui -->
-          </tbody>
-        </table>
+    <!-- Container dos Repositórios Gerados Dinamicamente -->
+    <div id="repositories-container">
+      <div class="hud-card" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+        Carregando manifesto de artefatos...
       </div>
-    </section>
+    </div>
   </main>
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Eiju Ito — GitHub Pages Futurista &middot; Artifact Vault</p>
+      <p>&copy; 2026 Eiju Ito — GitHub Pages &middot; Verificação SHA-256 Automatizada</p>
     </div>
   </footer>
 
+  <script>
+    let manifestData = null;
+
+    async function loadManifest() {
+      try {
+        const response = await fetch('manifest.json');
+        if (!response.ok) throw new Error("Manifesto não encontrado.");
+        manifestData = await response.json();
+        renderRepositories(manifestData.repositories);
+        document.getElementById('crawler-status').innerHTML = 
+          `<span class="status-dot"></span> ${manifestData.total_repositories} REPOS INDEXED`;
+      } catch (err) {
+        console.warn("Manifesto ainda não compilado:", err);
+        document.getElementById('repositories-container').innerHTML = `
+          <div class="hud-card">
+            <h3 style="color: var(--cyan-glow);">template-repo (Fallback)</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">O catálogo automático está sincronizando com o próximo build do GitHub Actions.</p>
+            <a class="btn-download" href="template-repo/index.html">Acessar template-repo &rarr;</a>
+          </div>
+        `;
+      }
+    }
+
+    function copyHash(hash, btn) {
+      navigator.clipboard.writeText(hash).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = "COPIADO!";
+        btn.style.color = "var(--green-glow)";
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = "";
+        }, 1500);
+      });
+    }
+
+    function renderRepositories(repos) {
+      const container = document.getElementById('repositories-container');
+      container.innerHTML = '';
+
+      if (!repos || repos.length === 0) {
+        container.innerHTML = '<div class="hud-card">Nenhum repositório ou artefato encontrado no momento.</div>';
+        return;
+      }
+
+      repos.forEach(repo => {
+        const card = document.createElement('section');
+        card.className = 'hud-card';
+        card.style.marginBottom = '2rem';
+
+        let artifactsHtml = '';
+        if (repo.artifacts.length === 0) {
+          artifactsHtml = '<p style="color: var(--text-muted); font-size: 0.9rem; padding: 1rem 0;">Nenhum arquivo binário distribuído nesta pasta ainda.</p>';
+        } else {
+          artifactsHtml = `
+            <div class="table-responsive" style="margin-top: 1rem;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Arquivo</th>
+                    <th>Tamanho</th>
+                    <th>SHA-256 Checksum</th>
+                    <th>Modificado</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${repo.artifacts.map(a => `
+                    <tr>
+                      <td><code style="color: var(--cyan-glow); font-family: var(--font-mono);">${a.filename}</code></td>
+                      <td style="font-family: var(--font-mono); font-size: 0.85rem;">${a.size_human}</td>
+                      <td>
+                        <span class="hash-badge" title="Clique para copiar: ${a.sha256}" onclick="copyHash('${a.sha256}', this)">
+                          📋 ${a.sha256.substring(0, 16)}...
+                        </span>
+                      </td>
+                      <td style="font-size: 0.8rem; color: var(--text-muted);">${a.last_modified}</td>
+                      <td><a class="btn-download" href="${a.relative_url}" download>Baixar</a></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div class="card-tag">Repositório</div>
+              <h2 style="font-size: 1.35rem; color: #fff;">${repo.name}</h2>
+            </div>
+            ${repo.has_custom_index ? `<a class="btn-download" href="${repo.name}/index.html">Ver Documentação Completa &rarr;</a>` : ''}
+          </div>
+          ${artifactsHtml}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById('filter-input').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      if (!manifestData) return;
+
+      const filtered = manifestData.repositories.map(repo => {
+        const matchesRepo = repo.name.toLowerCase().includes(term);
+        const matchingArtifacts = repo.artifacts.filter(a => 
+          a.filename.toLowerCase().includes(term) || a.sha256.toLowerCase().includes(term)
+        );
+
+        if (matchesRepo) {
+          return repo;
+        } else if (matchingArtifacts.length > 0) {
+          return { ...repo, artifacts: matchingArtifacts };
+        }
+        return null;
+      }).filter(r => r !== null);
+
+      renderRepositories(filtered);
+    });
+
+    loadManifest();
+  </script>
 </body>
 </html>
