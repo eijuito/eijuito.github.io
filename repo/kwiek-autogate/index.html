@@ -3,11 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artefatos &amp; Firmwares: kwiek-autogate | Eiju Ito</title>
+  <title>Artefatos &amp; Binários: kwiek-autogate | Eiju Ito</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/main.css">
+  <style>
+    .hash-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .hash-badge:hover {
+      color: var(--cyan-glow);
+      border-color: var(--cyan-glow);
+    }
+  </style>
 </head>
 <body>
 
@@ -19,7 +42,7 @@
       </a>
       <div style="display: flex; align-items: center; gap: 1.5rem;">
         <span class="status-badge">
-          <span class="status-dot"></span> PROJECT REPO ACTIVE
+          <span class="status-dot"></span> INDUSTRIAL EMBEDDED
         </span>
         <nav class="nav-links">
           <a href="../../index.html#skills">Skills</a>
@@ -39,125 +62,119 @@
         <a href="../index.html">/repo Vault</a> &gt; 
         <span>kwiek-autogate</span>
       </nav>
-      <div class="card-tag">Repositório Privado &middot; IoT &amp; Embedded Automation</div>
+      <div class="card-tag">Repositório Industrial &middot; Rust Embedded Automation</div>
       <h1 class="hero-title" style="font-size: 2.4rem;">kwiek-autogate</h1>
       <p class="hero-subtitle">
-        Sistema inteligente de automação de portões automáticos baseado em microcontroladores ESP32/ESP8266 com telemetria, acionamento seguro, integração com Home Assistant, MQTT e assistentes virtuais (Alexa / Google Assistant).
+        Controlador industrial de portões eletrônicos e relés para Raspberry Pi desenvolvido em Rust nativo de alta performance. Arquitetura resiliente Supervisor/Worker com watchdog autônomo, acionamento por interrupção física GPIO de baixa latência e atualizações remotas seguras sem parada de serviço.
       </p>
     </div>
 
     <!-- Visão Geral & Especificações -->
     <section class="hud-card" style="margin-bottom: 2rem;">
-      <div class="card-tag">Arquitetura do Projeto</div>
+      <div class="card-tag">Arquitetura de Alta Disponibilidade (Rust Embedded)</div>
       <h2 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Sobre o Sistema kwiek-autogate</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
-        O <strong>kwiek-autogate</strong> foi desenvolvido para transformar portões eletrônicos convencionais em dispositivos IoT inteligentes e seguros. Oferece monitoramento em tempo real do status de abertura/fechamento (sensores magnéticos reed switch), histórico de acionamentos, protocolo fail-safe anti-esmagamento e comunicação assíncrona bidirecional criptografada.
+        O <strong>kwiek-autogate</strong> é uma solução de nível industrial projetada para automação e controle crítico de portões, iluminação e acessos em Raspberry Pi (ARM64 / ARMv7). Construído inteiramente em <strong>Rust</strong>, opera sob o padrão desacoplado <em>Supervisor / Worker</em>: um daemon permanente com watchdog automático que gerencia o ciclo de vida, licenciamento por Hardware ID e telemetria, enquanto o motor de execução controla diretamente os relés (active-low) e as interrupções de hardware dos botões físicos com debounce sub-milissegundo, garantindo máxima imunidade a travamentos e segurança operacional fail-safe.
       </p>
 
       <div class="badge-cloud">
-        <span class="tech-badge lead">ESP32 / ESP8266</span>
-        <span class="tech-badge special">Home Assistant (MQTT Discovery)</span>
-        <span class="tech-badge special">Alexa &amp; Google Assistant</span>
-        <span class="tech-badge">OTA (Over-The-Air Updates)</span>
-        <span class="tech-badge">Fail-Safe Lockout</span>
-        <span class="tech-badge">WebSockets Local WebUI</span>
+        <span class="tech-badge lead">Rust 2021 (Native Binary)</span>
+        <span class="tech-badge special">Raspberry Pi (ARM64 / aarch64)</span>
+        <span class="tech-badge special">Supervisor / Worker Architecture</span>
+        <span class="tech-badge">Zero-Downtime Hot Reload</span>
+        <span class="tech-badge">Hardware GPIO Interrupts (rppal)</span>
+        <span class="tech-badge">Hardware ID Licensing</span>
+        <span class="tech-badge">Active-Low Relay Shield (BCM 26, 20, 21)</span>
+        <span class="tech-badge">Debounced Physical Buttons (BCM 5, 6, 12, 13)</span>
       </div>
     </section>
 
-    <!-- Tabela de Versões e Artefatos -->
+    <!-- Tabela Dinâmica de Artefatos Detectados Automaticamente -->
     <section class="hud-card" style="margin-bottom: 2rem;">
-      <div class="card-tag">Distribuição Pública de Binários &amp; Firmwares</div>
-      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Versões dos Artefatos Disponíveis</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+        <div>
+          <div class="card-tag">Distribuição Oficial &middot; ARM64 Linux</div>
+          <h2 style="font-size: 1.3rem;">Artefatos Detectados no Repositório</h2>
+        </div>
+        <span id="sync-indicator" class="status-badge" style="font-size: 0.75rem;">
+          <span class="status-dot"></span> Sincronizando manifesto...
+        </span>
+      </div>
       
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>Artefato</th>
-              <th>Versão</th>
-              <th>Target / Hardware</th>
+              <th>Artefato Binário</th>
               <th>Tamanho</th>
               <th>SHA-256 Checksum</th>
-              <th>Download</th>
+              <th>Última Modificação</th>
+              <th>Ação</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Versão v1.2.0 (Latest / Atual) -->
+          <tbody id="artifacts-table-body">
+            <!-- Fallback estático caso o JS esteja desativado -->
             <tr>
               <td>
-                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin</code>
-                <div style="font-size: 0.75rem; color: var(--green-glow);">[LATEST STABLE] Suporte a Home Assistant MQTT Discovery &amp; TLS</div>
+                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-autogate_v2.0.0_linux_arm64.tar.gz</code>
+                <div style="font-size: 0.75rem; color: var(--green-glow);">[PACOTE COMPLETO] Bundle com Supervisor, Worker e Scripts systemd</div>
               </td>
-              <td style="font-family: var(--font-mono);">1.2.0</td>
-              <td>ESP32 (Dual Core)</td>
-              <td style="font-family: var(--font-mono);">1.42 MB</td>
-              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">9e4f1a28...7b3c</span></td>
-              <td><a class="btn-download" href="kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin" download>Baixar .bin</a></td>
+              <td style="font-family: var(--font-mono);">2.50 MB</td>
+              <td><span class="hash-badge" title="1fde3f0f50d05733bc35b2e7050e76bf283b279921e784cfa36ddaec1d92217f" onclick="copyHash('1fde3f0f50d05733bc35b2e7050e76bf283b279921e784cfa36ddaec1d92217f', this)">📋 1fde3f0f...</span></td>
+              <td style="font-size: 0.8rem; color: var(--text-muted);">2026-11-04 03:00 UTC</td>
+              <td><a class="btn-download" href="kwiek-autogate_v2.0.0_linux_arm64.tar.gz" download>Baixar</a></td>
             </tr>
-
             <tr>
               <td>
-                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-autogate_v1.2.0_esp8266_flash4m.bin</code>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Build leve otimizada para chips ESP8266 (NodeMCU / Wemos D1)</div>
+                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-supervisor_v2.0.0_linux_arm64.bin</code>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Daemon Supervisor: Watchdog, licenciamento e hot-reload</div>
               </td>
-              <td style="font-family: var(--font-mono);">1.2.0</td>
-              <td>ESP8266 (4MB)</td>
-              <td style="font-family: var(--font-mono);">768 KB</td>
-              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">3c8b91a0...4e2d</span></td>
-              <td><a class="btn-download" href="kwiek-autogate_v1.2.0_esp8266_flash4m.bin" download>Baixar .bin</a></td>
+              <td style="font-family: var(--font-mono);">3.57 MB</td>
+              <td><span class="hash-badge" title="6634b7dd6a4948f5d10551518b5b1d2e704f0b55249753a1baeb4bd919b030c3" onclick="copyHash('6634b7dd6a4948f5d10551518b5b1d2e704f0b55249753a1baeb4bd919b030c3', this)">📋 6634b7dd...</span></td>
+              <td style="font-size: 0.8rem; color: var(--text-muted);">2026-11-04 03:00 UTC</td>
+              <td><a class="btn-download" href="kwiek-supervisor_v2.0.0_linux_arm64.bin" download>Baixar</a></td>
             </tr>
-
-            <!-- Versão v1.1.0 -->
             <tr>
               <td>
-                <code style="color: var(--text-main); font-family: var(--font-mono);">kwiek-autogate_v1.1.0_esp32_dio-40mhz.bin</code>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Adição de painel WebUI responsivo e captive portal para setup Wi-Fi</div>
+                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-worker_v2.0.0_linux_arm64.bin</code>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Executável Worker: Controle direto de GPIO e relés</div>
               </td>
-              <td style="font-family: var(--font-mono);">1.1.0</td>
-              <td>ESP32</td>
-              <td style="font-family: var(--font-mono);">1.35 MB</td>
-              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">a1d2e3f4...9081</span></td>
-              <td><a class="btn-download" href="kwiek-autogate_v1.1.0_esp32_dio-40mhz.bin" download>Baixar .bin</a></td>
-            </tr>
-
-            <!-- Versão v1.0.0 (Release Inicial) -->
-            <tr>
-              <td>
-                <code style="color: var(--text-main); font-family: var(--font-mono);">kwiek-autogate_v1.0.0_esp8266_base.bin</code>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Versão base: controle de pulso de relé e detecção via sensores magnéticos</div>
-              </td>
-              <td style="font-family: var(--font-mono);">1.0.0</td>
-              <td>ESP8266</td>
-              <td style="font-family: var(--font-mono);">680 KB</td>
-              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">5f6a7b8c...1234</span></td>
-              <td><a class="btn-download" href="kwiek-autogate_v1.0.0_esp8266_base.bin" download>Baixar .bin</a></td>
+              <td style="font-family: var(--font-mono);">1.51 MB</td>
+              <td><span class="hash-badge" title="4e04b956b142dd150a90faf309c01ab0be34c8ae291b5f2a1027b277107d49ca" onclick="copyHash('4e04b956b142dd150a90faf309c01ab0be34c8ae291b5f2a1027b277107d49ca', this)">📋 4e04b956...</span></td>
+              <td style="font-size: 0.8rem; color: var(--text-muted);">2026-11-04 03:00 UTC</td>
+              <td><a class="btn-download" href="kwiek-worker_v2.0.0_linux_arm64.bin" download>Baixar</a></td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Instruções de Flash e Instalação -->
+    <!-- Instruções de Deploy e Instalação no Raspberry Pi -->
     <section class="hud-card" style="margin-bottom: 3.5rem;">
-      <div class="card-tag">Guia de Instalação &amp; Flash</div>
-      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Como Gravar o Firmware no Microcontrolador</h2>
+      <div class="card-tag">Procedimento de Instalação no Raspberry Pi</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Deploy do Binário Rust nativo via terminal</h2>
       
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
-        Você pode gravar o arquivo <code>.bin</code> utilizando a ferramenta oficial <strong>esptool.py</strong> ou via interface web (Adafruit / ESP Web Flasher):
+        Execute diretamente no terminal do Raspberry Pi (Raspberry Pi OS 64-bit / Debian Bookworm ARM64):
       </p>
 
       <div class="terminal-window" style="margin-bottom: 1rem;">
         <div class="terminal-body" style="padding: 1rem;">
-          <p><span class="term-cmd"># Gravação no ESP32 via esptool:</span></p>
-          <p class="term-output">esptool.py --chip esp32 --port COM3 --baud 460800 write_flash -z 0x10000 kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin</p>
+          <p><span class="term-cmd"># 1. Baixar o bundle oficial v2.0.0:</span></p>
+          <p class="term-output">curl -fsSLO https://eijuito.github.io/repo/kwiek-autogate/kwiek-autogate_v2.0.0_linux_arm64.tar.gz</p>
           <br>
-          <p><span class="term-cmd"># Gravação no ESP8266:</span></p>
-          <p class="term-output">esptool.py --chip esp8266 --port COM3 write_flash 0x0 kwiek-autogate_v1.2.0_esp8266_flash4m.bin</p>
+          <p><span class="term-cmd"># 2. Validar o hash de integridade SHA-256:</span></p>
+          <p class="term-output">curl -fsSL https://eijuito.github.io/repo/kwiek-autogate/SHA256SUMS | sha256sum -c --ignore-missing</p>
+          <br>
+          <p><span class="term-cmd"># 3. Descompactar e iniciar os serviços:</span></p>
+          <p class="term-output">tar -xzvf kwiek-autogate_v2.0.0_linux_arm64.tar.gz</p>
+          <p class="term-output">sudo chmod +x kwiek-supervisor kwiek-worker</p>
+          <p class="term-output">sudo ./kwiek-supervisor --start</p>
         </div>
       </div>
 
       <p style="color: var(--text-muted); font-size: 0.85rem;">
-        💡 <em>Após o primeiro flash, as atualizações subsequentes podem ser realizadas via OTA diretamente pela interface web do portão.</em>
+        🛡️ <em>Arquitetura com Watchdog nativo: caso o worker seja interrompido, o supervisor restabelece o controle de GPIO em menos de 100ms.</em>
       </p>
     </section>
 
@@ -169,6 +186,65 @@
     </div>
   </footer>
 
+  <script>
+    function copyHash(hash, btn) {
+      navigator.clipboard.writeText(hash).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = "COPIADO!";
+        btn.style.color = "var(--green-glow)";
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = "";
+        }, 1500);
+      });
+    }
+
+    // Leitura dinâmica do manifest.json gerado automaticamente
+    async function loadArtifactsDynamically() {
+      try {
+        const response = await fetch('../manifest.json');
+        if (!response.ok) return;
+        const data = await response.json();
+        
+        const myRepo = data.repositories.find(r => r.name === 'kwiek-autogate');
+        if (!myRepo || !myRepo.artifacts || myRepo.artifacts.length === 0) return;
+
+        const tbody = document.getElementById('artifacts-table-body');
+        tbody.innerHTML = '';
+
+        myRepo.artifacts.forEach(artifact => {
+          const tr = document.createElement('tr');
+          const shortHash = artifact.sha256 ? artifact.sha256.substring(0, 8) + '...' : 'N/A';
+          
+          tr.innerHTML = `
+            <td>
+              <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">${artifact.filename}</code>
+            </td>
+            <td style="font-family: var(--font-mono);">${artifact.size_human}</td>
+            <td>
+              <span class="hash-badge" title="Clique para copiar: ${artifact.sha256}" onclick="copyHash('${artifact.sha256}', this)">
+                📋 ${shortHash}
+              </span>
+            </td>
+            <td style="font-size: 0.8rem; color: var(--text-muted);">${artifact.last_modified}</td>
+            <td>
+              <a class="btn-download" href="${artifact.filename}" download>Baixar</a>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const indicator = document.getElementById('sync-indicator');
+        if (indicator) {
+          indicator.innerHTML = `<span class="status-dot"></span> ${myRepo.artifacts.length} ARTEFATOS SINCRONIZADOS`;
+        }
+      } catch (e) {
+        console.log("Utilizando lista estática de fallback:", e);
+      }
+    }
+
+    loadArtifactsDynamically();
+  </script>
+
 </body>
 </html>
-
