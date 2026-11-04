@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artefatos &amp; Firmwares: kwiek-autogate | Eiju Ito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+  <!-- HUD Header -->
+  <header class="hud-header">
+    <div class="container hud-nav">
+      <a href="../../index.html" class="logo-hud">
+        <span>&lt;EIJU_ITO /&gt;</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <span class="status-badge">
+          <span class="status-dot"></span> PROJECT REPO ACTIVE
+        </span>
+        <nav class="nav-links">
+          <a href="../../index.html#skills">Skills</a>
+          <a href="../index.html">/repo Vault</a>
+          <a href="../../docs/melhores-praticas-repositorio-artefatos.md">Padrões</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 2.5rem;">
+    
+    <!-- Breadcrumb e Título do Projeto -->
+    <div style="margin-bottom: 2rem;">
+      <nav class="breadcrumb">
+        <a href="../../index.html">Início</a> &gt; 
+        <a href="../index.html">/repo Vault</a> &gt; 
+        <span>kwiek-autogate</span>
+      </nav>
+      <div class="card-tag">Repositório Privado &middot; IoT &amp; Embedded Automation</div>
+      <h1 class="hero-title" style="font-size: 2.4rem;">kwiek-autogate</h1>
+      <p class="hero-subtitle">
+        Sistema inteligente de automação de portões automáticos baseado em microcontroladores ESP32/ESP8266 com telemetria, acionamento seguro, integração com Home Assistant, MQTT e assistentes virtuais (Alexa / Google Assistant).
+      </p>
+    </div>
+
+    <!-- Visão Geral & Especificações -->
+    <section class="hud-card" style="margin-bottom: 2rem;">
+      <div class="card-tag">Arquitetura do Projeto</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Sobre o Sistema kwiek-autogate</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
+        O <strong>kwiek-autogate</strong> foi desenvolvido para transformar portões eletrônicos convencionais em dispositivos IoT inteligentes e seguros. Oferece monitoramento em tempo real do status de abertura/fechamento (sensores magnéticos reed switch), histórico de acionamentos, protocolo fail-safe anti-esmagamento e comunicação assíncrona bidirecional criptografada.
+      </p>
+
+      <div class="badge-cloud">
+        <span class="tech-badge lead">ESP32 / ESP8266</span>
+        <span class="tech-badge special">Home Assistant (MQTT Discovery)</span>
+        <span class="tech-badge special">Alexa &amp; Google Assistant</span>
+        <span class="tech-badge">OTA (Over-The-Air Updates)</span>
+        <span class="tech-badge">Fail-Safe Lockout</span>
+        <span class="tech-badge">WebSockets Local WebUI</span>
+      </div>
+    </section>
+
+    <!-- Tabela de Versões e Artefatos -->
+    <section class="hud-card" style="margin-bottom: 2rem;">
+      <div class="card-tag">Distribuição Pública de Binários &amp; Firmwares</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Versões dos Artefatos Disponíveis</h2>
+      
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Artefato</th>
+              <th>Versão</th>
+              <th>Target / Hardware</th>
+              <th>Tamanho</th>
+              <th>SHA-256 Checksum</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Versão v1.2.0 (Latest / Atual) -->
+            <tr>
+              <td>
+                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin</code>
+                <div style="font-size: 0.75rem; color: var(--green-glow);">[LATEST STABLE] Suporte a Home Assistant MQTT Discovery &amp; TLS</div>
+              </td>
+              <td style="font-family: var(--font-mono);">1.2.0</td>
+              <td>ESP32 (Dual Core)</td>
+              <td style="font-family: var(--font-mono);">1.42 MB</td>
+              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">9e4f1a28...7b3c</span></td>
+              <td><a class="btn-download" href="kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin" download>Baixar .bin</a></td>
+            </tr>
+
+            <tr>
+              <td>
+                <code style="color: var(--cyan-glow); font-family: var(--font-mono); font-weight: 600;">kwiek-autogate_v1.2.0_esp8266_flash4m.bin</code>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Build leve otimizada para chips ESP8266 (NodeMCU / Wemos D1)</div>
+              </td>
+              <td style="font-family: var(--font-mono);">1.2.0</td>
+              <td>ESP8266 (4MB)</td>
+              <td style="font-family: var(--font-mono);">768 KB</td>
+              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">3c8b91a0...4e2d</span></td>
+              <td><a class="btn-download" href="kwiek-autogate_v1.2.0_esp8266_flash4m.bin" download>Baixar .bin</a></td>
+            </tr>
+
+            <!-- Versão v1.1.0 -->
+            <tr>
+              <td>
+                <code style="color: var(--text-main); font-family: var(--font-mono);">kwiek-autogate_v1.1.0_esp32_dio-40mhz.bin</code>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Adição de painel WebUI responsivo e captive portal para setup Wi-Fi</div>
+              </td>
+              <td style="font-family: var(--font-mono);">1.1.0</td>
+              <td>ESP32</td>
+              <td style="font-family: var(--font-mono);">1.35 MB</td>
+              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">a1d2e3f4...9081</span></td>
+              <td><a class="btn-download" href="kwiek-autogate_v1.1.0_esp32_dio-40mhz.bin" download>Baixar .bin</a></td>
+            </tr>
+
+            <!-- Versão v1.0.0 (Release Inicial) -->
+            <tr>
+              <td>
+                <code style="color: var(--text-main); font-family: var(--font-mono);">kwiek-autogate_v1.0.0_esp8266_base.bin</code>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Versão base: controle de pulso de relé e detecção via sensores magnéticos</div>
+              </td>
+              <td style="font-family: var(--font-mono);">1.0.0</td>
+              <td>ESP8266</td>
+              <td style="font-family: var(--font-mono);">680 KB</td>
+              <td><span class="badge-hash" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">5f6a7b8c...1234</span></td>
+              <td><a class="btn-download" href="kwiek-autogate_v1.0.0_esp8266_base.bin" download>Baixar .bin</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Instruções de Flash e Instalação -->
+    <section class="hud-card" style="margin-bottom: 3.5rem;">
+      <div class="card-tag">Guia de Instalação &amp; Flash</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Como Gravar o Firmware no Microcontrolador</h2>
+      
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
+        Você pode gravar o arquivo <code>.bin</code> utilizando a ferramenta oficial <strong>esptool.py</strong> ou via interface web (Adafruit / ESP Web Flasher):
+      </p>
+
+      <div class="terminal-window" style="margin-bottom: 1rem;">
+        <div class="terminal-body" style="padding: 1rem;">
+          <p><span class="term-cmd"># Gravação no ESP32 via esptool:</span></p>
+          <p class="term-output">esptool.py --chip esp32 --port COM3 --baud 460800 write_flash -z 0x10000 kwiek-autogate_v1.2.0_esp32_qio-40mhz.bin</p>
+          <br>
+          <p><span class="term-cmd"># Gravação no ESP8266:</span></p>
+          <p class="term-output">esptool.py --chip esp8266 --port COM3 write_flash 0x0 kwiek-autogate_v1.2.0_esp8266_flash4m.bin</p>
+        </div>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        💡 <em>Após o primeiro flash, as atualizações subsequentes podem ser realizadas via OTA diretamente pela interface web do portão.</em>
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Eiju Ito — Projeto kwiek-autogate &middot; Distribuído via GitHub Pages</p>
+    </div>
+  </footer>
+
+</body>
+</html>

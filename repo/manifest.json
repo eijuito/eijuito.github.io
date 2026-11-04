@@ -1,7 +1,13 @@
 {
-  "generated_at": "2026-11-04T01:48:29.794966+00:00",
-  "total_repositories": 1,
+  "generated_at": "2026-11-04T02:00:41.359122+00:00",
+  "total_repositories": 2,
   "repositories": [
+    {
+      "name": "kwiek-autogate",
+      "has_custom_index": true,
+      "total_artifacts": 0,
+      "artifacts": []
+    },
     {
       "name": "template-repo",
       "has_custom_index": true,
