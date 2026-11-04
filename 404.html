@@ -4,27 +4,172 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404: RESOURCE_NOT_FOUND | Eiju Ito</title>
+  <!-- Usar caminhos absolutos / para garantir funcionamento em qualquer subnível de URL 404 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
   <style>
+    /* Estilos embutidos de segurança caso o CSS externo demore a carregar */
+    body {
+      background-color: #07090e !important;
+      color: #f1f5f9 !important;
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .hud-header {
+      background: rgba(7, 9, 14, 0.95);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 1rem 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+    }
+    .hud-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-hud {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #00f0ff !important;
+      text-decoration: none;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+    .nav-links a {
+      color: #94a3b8 !important;
+      text-decoration: none;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin-left: 1.25rem;
+    }
+    .nav-links a:hover {
+      color: #00f0ff !important;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: #ff5f56;
+      background: rgba(255, 95, 86, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 95, 86, 0.3);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #ff5f56;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #ff5f56;
+    }
     .glitch-code {
       font-size: 5rem;
       font-weight: 800;
-      font-family: var(--font-mono);
+      font-family: 'JetBrains Mono', Consolas, monospace;
       color: #ff5f56;
-      text-shadow: 0 0 20px rgba(255, 95, 86, 0.6), 0 0 40px rgba(255, 95, 86, 0.3);
-      letter-spacing: -0.05em;
+      text-shadow: 0 0 20px rgba(255, 95, 86, 0.6);
       line-height: 1;
-      margin-bottom: 1rem;
+      margin: 0.5rem 0 1rem;
     }
     .error-card {
       text-align: center;
-      padding: 3.5rem 2rem;
-      background: radial-gradient(circle at 50% 30%, rgba(255, 95, 86, 0.08) 0%, rgba(13, 19, 33, 0.85) 70%);
+      padding: 3rem 2rem;
+      background: rgba(13, 19, 33, 0.9);
+      border: 1px solid rgba(255, 95, 86, 0.4);
+      border-radius: 10px;
+      box-shadow: 0 0 35px rgba(255, 95, 86, 0.12);
+      margin-top: 3rem;
+    }
+    .card-tag {
+      font-family: monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #ff5f56;
+      margin-bottom: 0.5rem;
+    }
+    .terminal-window {
+      background: #0a0e17;
       border: 1px solid rgba(255, 95, 86, 0.3);
-      box-shadow: 0 0 30px rgba(255, 95, 86, 0.1);
+      border-radius: 8px;
+      text-align: left;
+      max-width: 580px;
+      margin: 1.5rem auto 2.5rem;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      overflow: hidden;
+    }
+    .terminal-header {
+      background: #0d131f;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 95, 86, 0.2);
+    }
+    .terminal-dots { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+    .terminal-title { color: #94a3b8; font-size: 0.8rem; margin-left: 0.75rem; }
+    .terminal-body { padding: 1.25rem; font-size: 0.85rem; line-height: 1.7; }
+    .btn-cyber {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #07090e !important;
+      background: #00f0ff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-cyber:hover {
+      background: #fff;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+    }
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 240, 255, 0.1);
+      color: #00f0ff !important;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-download:hover {
+      background: #00f0ff;
+      color: #000 !important;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    }
+    footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2.5rem 0;
+      text-align: center;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #94a3b8;
     }
   </style>
 </head>
@@ -33,35 +178,35 @@
   <!-- HUD Header -->
   <header class="hud-header">
     <div class="container hud-nav">
-      <a href="index.html" class="logo-hud">
+      <a href="/index.html" class="logo-hud">
         <span>&lt;EIJU_ITO /&gt;</span>
       </a>
       <div style="display: flex; align-items: center; gap: 1.5rem;">
-        <span class="status-badge" style="color: #ff5f56; border-color: rgba(255, 95, 86, 0.3); background: rgba(255, 95, 86, 0.1);">
-          <span class="status-dot" style="background-color: #ff5f56; box-shadow: 0 0 6px #ff5f56;"></span> SIGNAL LOST
+        <span class="status-badge">
+          <span class="status-dot"></span> SIGNAL LOST
         </span>
         <nav class="nav-links">
-          <a href="index.html">Início</a>
-          <a href="repo/index.html">/repo Vault</a>
-          <a href="docs/plano-projeto.md">Docs</a>
+          <a href="/index.html">Início</a>
+          <a href="/repo/index.html">/repo Vault</a>
+          <a href="/docs/plano-projeto.md">Docs</a>
         </nav>
       </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top: 3.5rem; max-width: 760px;">
+  <main class="container">
     
-    <div class="hud-card error-card">
-      <div class="card-tag" style="color: #ff5f56;">CRITICAL EXCEPTION &middot; HTTP 404</div>
+    <div class="error-card">
+      <div class="card-tag">CRITICAL EXCEPTION &middot; HTTP 404</div>
       <div class="glitch-code">404</div>
-      <h1 style="font-size: 1.6rem; margin-bottom: 1rem; color: #fff;">RESOURCE_NOT_FOUND</h1>
+      <h1 style="font-size: 1.6rem; margin-bottom: 0.75rem; color: #fff;">RESOURCE_NOT_FOUND</h1>
       
-      <p style="color: var(--text-muted); font-size: 1rem; max-width: 520px; margin: 0 auto 2rem; line-height: 1.6;">
+      <p style="color: #94a3b8; font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.6;">
         O endereço ou artefato solicitado não existe no setor de memória atual, foi descontinuado ou as coordenadas de rota foram corrompidas.
       </p>
 
       <!-- Terminal Diagnostics Box -->
-      <div class="terminal-window" style="text-align: left; max-width: 560px; margin: 0 auto 2.5rem;">
+      <div class="terminal-window">
         <div class="terminal-header">
           <div class="terminal-dots">
             <span class="dot red"></span>
@@ -70,19 +215,20 @@
           </div>
           <span class="terminal-title">kernel@eijuito-os: ~ /sys/net/router</span>
         </div>
-        <div class="terminal-body" style="font-size: 0.85rem; padding: 1rem 1.25rem;">
-          <p><span class="term-cmd">&gt; route.inspect(target_uri)</span></p>
+        <div class="terminal-body">
+          <p><span style="color: #00f0ff;">&gt; route.inspect(target_uri)</span></p>
           <p style="color: #ff5f56;">[ERR] Lookup failed: URI sector not found in active manifest.</p>
-          <p class="term-output">[INFO] Suggested recovery action: fallback to primary gateway.</p>
+          <p style="color: #cbd5e1;">[INFO] Suggested recovery action: fallback to primary gateway.</p>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <a href="index.html" class="btn-cyber">
-          &larr; Retornar ao Terminal Principal
+      <!-- Ações de Retorno com caminhos absolutos / -->
+      <div style="display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap;">
+        <a href="/index.html" class="btn-cyber">
+          &larr; Retornar ao Início
         </a>
-        <a href="repo/index.html" class="btn-download" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-          Explorar Vault /repo
+        <a href="/repo/index.html" class="btn-download">
+          Explorar Vault /repo &rarr;
         </a>
       </div>
     </div>
