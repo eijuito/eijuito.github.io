@@ -151,31 +151,22 @@
 
     <!-- Instruções de Deploy e Instalação no Raspberry Pi -->
     <section class="hud-card" style="margin-bottom: 3.5rem;">
-      <div class="card-tag">Procedimento de Instalação no Raspberry Pi</div>
-      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Deploy do Binário Rust nativo via terminal</h2>
+      <div class="card-tag">Instalação Oficial Automatizada (systemd)</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Instalação com Comando Único no Raspberry Pi</h2>
       
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
-        Execute diretamente no terminal do Raspberry Pi (Raspberry Pi OS 64-bit / Debian Bookworm ARM64):
+      <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+        O script oficial realiza o download dos binários compilados em Rust, instala de forma isolada em <code>/opt/kwiek-autogate</code> (sem poluir a pasta do usuário) e registra o daemon permanente no <code>systemd</code> com inicialização automática no boot:
       </p>
-
       <div class="terminal-window" style="margin-bottom: 1rem;">
         <div class="terminal-body" style="padding: 1rem;">
-          <p><span class="term-cmd"># 1. Baixar o bundle oficial v2.0.0:</span></p>
-          <p class="term-output">curl -fsSLO https://eijuito.github.io/repo/kwiek-autogate/kwiek-autogate_v2.0.0_linux_arm64.tar.gz</p>
-          <br>
-          <p><span class="term-cmd"># 2. Validar o hash de integridade SHA-256:</span></p>
-          <p class="term-output">curl -fsSL https://eijuito.github.io/repo/kwiek-autogate/SHA256SUMS | sha256sum -c --ignore-missing</p>
-          <br>
-          <p><span class="term-cmd"># 3. Descompactar e iniciar os serviços:</span></p>
-          <p class="term-output">tar -xzvf kwiek-autogate_v2.0.0_linux_arm64.tar.gz</p>
-          <p class="term-output">sudo chmod +x kwiek-supervisor kwiek-worker</p>
-          <p class="term-output">sudo ./kwiek-supervisor --start</p>
+          <p class="term-output" style="color: var(--cyan-glow); font-family: var(--font-mono); font-size: 0.95rem; word-break: break-all;">
+            curl -fsSL https://eijuito.github.io/repo/kwiek-autogate/install.sh | sudo bash
+          </p>
         </div>
       </div>
-
-      <p style="color: var(--text-muted); font-size: 0.85rem;">
-        🛡️ <em>Arquitetura com Watchdog nativo: caso o worker seja interrompido, o supervisor restabelece o controle de GPIO em menos de 100ms.</em>
-      </p>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">
+        💡 Após a execução, o painel de controle estará disponível imediatamente em <code>http://&lt;IP_DO_PI&gt;:8000</code>.
+      </div>
     </section>
 
   </main>
