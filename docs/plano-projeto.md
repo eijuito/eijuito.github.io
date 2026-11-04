@@ -32,6 +32,7 @@ Este documento consolida o planejamento, as melhores práticas de acordo com [ht
 ---
 
 ## 3. Matriz Tecnológica Documentada
+- **Quality Assurance & Performance Engineering**: Quality Assurance (QA), Performance Engineering, testes de carga/stress (JMeter, k6), profiling de JVM/GC, observabilidade e tuning de latência/throughput.
 - **Inteligência Artificial & Agentes**: Gemini, Claude, Hermes MCP, Model Context Protocol, LangChain/LangGraph, RAG, Multi-Agentes.
 - **Linguagens & Runtime**: JAVA (destaque principal), Python, TypeScript, JavaScript, C/C++ (Embedded), SQL, Shell Scripting.
 - **Engenharia, Cloud & Trading**: MQL5 (MetaTrader 5), GitHub Actions CI/CD, Docker, REST/gRPC APIs, Microservices, Linux DevOps.
