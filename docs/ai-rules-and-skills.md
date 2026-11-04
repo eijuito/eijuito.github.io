@@ -27,8 +27,11 @@ Este documento orienta assistentes de Inteligência Artificial sobre a arquitetu
 
 ## 2. Habilidades Esperadas da IA (Skills)
 
-Ao atuar neste projeto, a IA deve desempenhar as seguintes capacidades:
+Ao atuar neste projeto ou em qualquer repositório privado conectado, a IA deve desempenhar as seguintes capacidades:
 
+- **Especialista em Publicação de Artefatos (`publish-public-artifacts`)**:
+  - Seguir rigorosamente a especificação contida em [docs/skills/publish-public-artifacts/SKILL.md](skills/publish-public-artifacts/SKILL.md).
+  - Garantir a sanitização total de segredos (Zero Leaks), a nomenclatura padronizada SemVer por plataforma e a validação de hashes SHA-256.
 - **Especialista em GitHub Pages & Actions**: Configurar e manter os workflows de CI/CD em `.github/workflows/deploy-pages.yml` com as actions oficiais (`actions/upload-pages-artifact`, `actions/deploy-pages`).
 - **Gerador de Catálogo de Artefatos**: Criar e manter páginas `index.html` com design limpo, acessível, responsivo e sem dependências externas pesadas (HTML5 semântico, CSS moderno).
 - **Guardião de Integridade**: Validar links relativos e garantir que novas pastas adicionadas em `repo/` sejam indexadas no catálogo central.

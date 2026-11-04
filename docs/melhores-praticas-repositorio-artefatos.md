@@ -104,3 +104,4 @@ A página `repo/index.html` faz um simples `fetch('manifest.json')` e cria tabel
 - Busca instantânea e filtros por projeto ou extensão (`.bin`, `.jar`, `.zip`, `.ex5`).
 - Botão "Copiar SHA-256" ao lado de cada arquivo para validação rápida com um clique.
 - Links diretos e tamanho formatado (`KB`, `MB`).
+
