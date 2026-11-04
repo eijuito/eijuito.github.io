@@ -3,29 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página Não Encontrada - 404</title>
+  <title>404: RESOURCE_NOT_FOUND | Eiju Ito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .glitch-code {
+      font-size: 5rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #ff5f56;
+      text-shadow: 0 0 20px rgba(255, 95, 86, 0.6), 0 0 40px rgba(255, 95, 86, 0.3);
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .error-card {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 95, 86, 0.08) 0%, rgba(13, 19, 33, 0.85) 70%);
+      border: 1px solid rgba(255, 95, 86, 0.3);
+      box-shadow: 0 0 30px rgba(255, 95, 86, 0.1);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>404 - Página Não Encontrada</h1>
-      <p class="subtitle">O recurso ou artefato solicitado não está disponível.</p>
+
+  <!-- HUD Header -->
+  <header class="hud-header">
+    <div class="container hud-nav">
+      <a href="index.html" class="logo-hud">
+        <span>&lt;EIJU_ITO /&gt;</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <span class="status-badge" style="color: #ff5f56; border-color: rgba(255, 95, 86, 0.3); background: rgba(255, 95, 86, 0.1);">
+          <span class="status-dot" style="background-color: #ff5f56; box-shadow: 0 0 6px #ff5f56;"></span> SIGNAL LOST
+        </span>
+        <nav class="nav-links">
+          <a href="index.html">Início</a>
+          <a href="repo/index.html">/repo Vault</a>
+          <a href="docs/plano-projeto.md">Docs</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <section class="card" style="text-align: center; padding: 3rem 1.5rem;">
-      <p style="margin-bottom: 1.5rem;">O link que você seguiu pode estar quebrado ou o arquivo foi descontinuado.</p>
-      <a class="btn-download" href="index.html">Voltar para a Página Inicial</a>
-    </section>
+  <main class="container" style="padding-top: 3.5rem; max-width: 760px;">
+    
+    <div class="hud-card error-card">
+      <div class="card-tag" style="color: #ff5f56;">CRITICAL EXCEPTION &middot; HTTP 404</div>
+      <div class="glitch-code">404</div>
+      <h1 style="font-size: 1.6rem; margin-bottom: 1rem; color: #fff;">RESOURCE_NOT_FOUND</h1>
+      
+      <p style="color: var(--text-muted); font-size: 1rem; max-width: 520px; margin: 0 auto 2rem; line-height: 1.6;">
+        O endereço ou artefato solicitado não existe no setor de memória atual, foi descontinuado ou as coordenadas de rota foram corrompidas.
+      </p>
+
+      <!-- Terminal Diagnostics Box -->
+      <div class="terminal-window" style="text-align: left; max-width: 560px; margin: 0 auto 2.5rem;">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <span class="terminal-title">kernel@eijuito-os: ~ /sys/net/router</span>
+        </div>
+        <div class="terminal-body" style="font-size: 0.85rem; padding: 1rem 1.25rem;">
+          <p><span class="term-cmd">&gt; route.inspect(target_uri)</span></p>
+          <p style="color: #ff5f56;">[ERR] Lookup failed: URI sector not found in active manifest.</p>
+          <p class="term-output">[INFO] Suggested recovery action: fallback to primary gateway.</p>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="index.html" class="btn-cyber">
+          &larr; Retornar ao Terminal Principal
+        </a>
+        <a href="repo/index.html" class="btn-download" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
+          Explorar Vault /repo
+        </a>
+      </div>
+    </div>
+
   </main>
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 eijuito.github.io</p>
+      <p>&copy; 2026 Eiju Ito — GitHub Pages &middot; Sistema Operacional de Distribuição</p>
     </div>
   </footer>
+
 </body>
 </html>
-
