@@ -23,8 +23,12 @@ systemctl stop ${SERVICE_NAME}.service 2>/dev/null || true
 systemctl stop kwiek-autogate.service 2>/dev/null || true
 killall -9 kwiek-supervisor kwiek-worker 2>/dev/null || true
 
-# 2. Criar diretorio limpo em /opt sem sujar a home do usuario
+# 2. Criar diretorio limpo em /opt e fazer backup preventivo do config.json existente
 mkdir -p "$TARGET_DIR"
+if [ -f "$TARGET_DIR/config.json" ]; then
+    echo "Preservando configuracoes e licenca existentes em $TARGET_DIR/config.json..."
+    cp -f "$TARGET_DIR/config.json" "$TARGET_DIR/config.json.bak"
+fi
 
 # 3. Baixar o pacote diretamente para /opt/kwiek-autogate e descompactar
 echo "Baixando pacote oficial $PACKAGE_NAME..."
@@ -33,6 +37,12 @@ curl -fsSL "$VAULT_URL/$PACKAGE_NAME" -o "$TARGET_DIR/$PACKAGE_NAME"
 echo "Extraindo arquivos em $TARGET_DIR..."
 tar -xzf "$TARGET_DIR/$PACKAGE_NAME" -C "$TARGET_DIR"
 rm -f "$TARGET_DIR/$PACKAGE_NAME"
+
+# Restaura o backup do config.json caso tenha sido sobrescrito
+if [ -f "$TARGET_DIR/config.json.bak" ]; then
+    echo "Restaurando config.json preservado..."
+    mv -f "$TARGET_DIR/config.json.bak" "$TARGET_DIR/config.json"
+fi
 
 # 4. Garantir permissoes de execucao nos binarios
 chmod +x "$TARGET_DIR/kwiek-supervisor"
