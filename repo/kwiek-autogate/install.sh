@@ -10,10 +10,13 @@ set -e
 
 TARGET_DIR="/opt/kwiek-autogate"
 SERVICE_NAME="kwiek-supervisor"
-VAULT_URL="https://eijuito.github.io/repo/kwiek-autogate"
-PACKAGE_NAME="kwiek-autogate_v2.0.0_linux_arm64.tar.gz"
+VAULT_URL="https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo/kwiek-autogate"
 
-echo "=== Instalando Kwiek Autogate (Rust ARM64) em $TARGET_DIR ==="
+# Permite especificar versao customizada (ex: sudo VERSION=2.0.0 bash install.sh)
+INSTALL_VERSION="${VERSION:-2.0.0}"
+PACKAGE_NAME="kwiek-autogate_v${INSTALL_VERSION}_linux_arm64.tar.gz"
+
+echo "=== Instalando Kwiek Autogate (Rust ARM64 v$INSTALL_VERSION) em $TARGET_DIR ==="
 
 # 1. Parar servicos anteriores caso estejam rodando
 systemctl stop ${SERVICE_NAME}.service 2>/dev/null || true
