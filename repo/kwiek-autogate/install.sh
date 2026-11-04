@@ -48,32 +48,12 @@ fi
 chmod +x "$TARGET_DIR/kwiek-supervisor"
 chmod +x "$TARGET_DIR/kwiek-worker"
 
-# 5. Criar config.json padrao com os pinos corretos se nao existir
+# 5. Se nao existir config.json, inicializa a partir de config-template.json
 if [ ! -f "$TARGET_DIR/config.json" ]; then
-    echo "Gerando config.json de producao..."
-    cat <<EOF > "$TARGET_DIR/config.json"
-{
-  "relays": {
-    "1": { "name": "Relay 1 (Gate)", "gpio": 26, "active_high": false },
-    "2": { "name": "Relay 2 (Light)", "gpio": 20, "active_high": false },
-    "3": { "name": "Relay 3", "gpio": 21, "active_high": false }
-  },
-  "buttons": {
-    "1": { "gpio": 5, "pull_up": true, "relay_id": 1, "mode": "pulse" },
-    "2": { "gpio": 6, "pull_up": true, "relay_id": 2, "mode": "pulse" },
-    "3": { "gpio": 12, "pull_up": true, "relay_id": 3, "mode": "pulse" },
-    "4": { "gpio": 13, "pull_up": true, "relay_id": 1, "mode": "pulse" }
-  },
-  "default_pulse_duration": 3.0,
-  "debounce_time_s": 0.1,
-  "enable_startup_self_test": false,
-  "auth_username": "porta",
-  "auth_password": "127952",
-  "version": "2.0.0",
-  "github_repo": "eijuito/kwiek-autogate",
-  "license_key": ""
-}
-EOF
+    if [ -f "$TARGET_DIR/config-template.json" ]; then
+        echo "Inicializando config.json a partir do config-template.json..."
+        cp -f "$TARGET_DIR/config-template.json" "$TARGET_DIR/config.json"
+    fi
 fi
 
 # 6. Registrar e ativar o servico permanente no systemd
