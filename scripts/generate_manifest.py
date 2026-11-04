@@ -90,3 +90,4 @@ def scan_repositories():
 
 if __name__ == "__main__":
     scan_repositories()
+

@@ -126,3 +126,4 @@ Ao enviar o commit para `eijuito.github.io`, o workflow oficial de build do Page
 `python scripts/generate_manifest.py`
 
 Esse script recalcula o `manifest.json`, disponibiliza o novo repositório na interface web `/repo/index.html` com o respectivo hash SHA-256 e botões de cópia e download.
+

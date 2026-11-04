@@ -1,12 +1,37 @@
 {
-  "generated_at": "2026-11-04T02:00:41.359122+00:00",
+  "generated_at": "2026-11-04T03:01:45.631098+00:00",
   "total_repositories": 2,
   "repositories": [
     {
       "name": "kwiek-autogate",
       "has_custom_index": true,
-      "total_artifacts": 0,
-      "artifacts": []
+      "total_artifacts": 3,
+      "artifacts": [
+        {
+          "filename": "kwiek-autogate_v2.0.0_linux_arm64.tar.gz",
+          "relative_url": "kwiek-autogate/kwiek-autogate_v2.0.0_linux_arm64.tar.gz",
+          "size_bytes": 2622811,
+          "size_human": "2.50 MB",
+          "sha256": "1fde3f0f50d05733bc35b2e7050e76bf283b279921e784cfa36ddaec1d92217f",
+          "last_modified": "2026-11-04 03:00 UTC"
+        },
+        {
+          "filename": "kwiek-supervisor_v2.0.0_linux_arm64.bin",
+          "relative_url": "kwiek-autogate/kwiek-supervisor_v2.0.0_linux_arm64.bin",
+          "size_bytes": 3743360,
+          "size_human": "3.57 MB",
+          "sha256": "6634b7dd6a4948f5d10551518b5b1d2e704f0b55249753a1baeb4bd919b030c3",
+          "last_modified": "2026-11-04 03:00 UTC"
+        },
+        {
+          "filename": "kwiek-worker_v2.0.0_linux_arm64.bin",
+          "relative_url": "kwiek-autogate/kwiek-worker_v2.0.0_linux_arm64.bin",
+          "size_bytes": 1579392,
+          "size_human": "1.51 MB",
+          "sha256": "4e04b956b142dd150a90faf309c01ab0be34c8ae291b5f2a1027b277107d49ca",
+          "last_modified": "2026-11-04 03:00 UTC"
+        }
+      ]
     },
     {
       "name": "template-repo",
