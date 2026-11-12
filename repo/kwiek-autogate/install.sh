@@ -90,5 +90,5 @@ systemctl restart ${SERVICE_NAME}.service
 
 echo ""
 echo "=== Kwiek Autogate Instalado com Sucesso! ==="
-echo "Servico ativo na porta 8000."
+echo "Servico ativo na porta 80 (ou 8000 fallback)."
 systemctl status ${SERVICE_NAME}.service --no-pager
