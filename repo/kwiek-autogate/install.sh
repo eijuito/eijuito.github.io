@@ -12,8 +12,8 @@ TARGET_DIR="/opt/kwiek-autogate"
 SERVICE_NAME="kwiek-supervisor"
 VAULT_URL="https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo/kwiek-autogate"
 
-# Permite especificar versao customizada (ex: sudo VERSION=2.0.1 bash install.sh)
-INSTALL_VERSION="${VERSION:-2.0.1}"
+# Permite especificar versao customizada (ex: sudo VERSION=2.0.3 bash install.sh)
+INSTALL_VERSION="${VERSION:-2.0.3}"
 PACKAGE_NAME="kwiek-autogate_v${INSTALL_VERSION}_linux_arm64.tar.gz"
 
 echo "=== Instalando Kwiek Autogate (Rust ARM64 v$INSTALL_VERSION) em $TARGET_DIR ==="
@@ -23,11 +23,15 @@ systemctl stop ${SERVICE_NAME}.service 2>/dev/null || true
 systemctl stop kwiek-autogate.service 2>/dev/null || true
 killall -9 kwiek-supervisor kwiek-worker 2>/dev/null || true
 
-# 2. Criar diretorio limpo em /opt e fazer backup preventivo do config.json existente
+# 2. Criar diretorio limpo em /opt e fazer backup preventivo do config.json e license.key existentes
 mkdir -p "$TARGET_DIR"
 if [ -f "$TARGET_DIR/config.json" ]; then
-    echo "Preservando configuracoes e licenca existentes em $TARGET_DIR/config.json..."
+    echo "Preservando configuracoes existentes em $TARGET_DIR/config.json..."
     cp -f "$TARGET_DIR/config.json" "$TARGET_DIR/config.json.bak"
+fi
+if [ -f "$TARGET_DIR/license.key" ]; then
+    echo "Preservando licenca isolada existente em $TARGET_DIR/license.key..."
+    cp -f "$TARGET_DIR/license.key" "$TARGET_DIR/license.key.bak"
 fi
 
 # 3. Baixar o pacote diretamente para /opt/kwiek-autogate e descompactar
@@ -38,10 +42,14 @@ echo "Extraindo arquivos em $TARGET_DIR..."
 tar -xzf "$TARGET_DIR/$PACKAGE_NAME" -C "$TARGET_DIR"
 rm -f "$TARGET_DIR/$PACKAGE_NAME"
 
-# Restaura o backup do config.json caso tenha sido sobrescrito
+# Restaura o backup do config.json e license.key caso tenham sido afetados
 if [ -f "$TARGET_DIR/config.json.bak" ]; then
     echo "Restaurando config.json preservado..."
     mv -f "$TARGET_DIR/config.json.bak" "$TARGET_DIR/config.json"
+fi
+if [ -f "$TARGET_DIR/license.key.bak" ]; then
+    echo "Restaurando license.key preservado..."
+    mv -f "$TARGET_DIR/license.key.bak" "$TARGET_DIR/license.key"
 fi
 
 # 4. Garantir permissoes de execucao nos binarios
