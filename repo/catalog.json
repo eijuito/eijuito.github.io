@@ -1,0 +1,44 @@
+{
+  "updated_at": "2026-11-16T20:20:00Z",
+  "plugins": [
+    {
+      "id": "0itoiot-kwiek-autogate",
+      "name": "Kwiek Autogate (IoT)",
+      "pillar": "iot",
+      "version": "2.0.4",
+      "description": "Controlador de portão inteligente com SSE em tempo real e fail-safe (ARM64 Linux)",
+      "windows_x64_url": "",
+      "windows_x64_sha256": "",
+      "linux_x64_url": "https://eijuito.github.io/repo/0itoiot-kwiek-autogate/kwiek-supervisor_v2.0.4_linux_arm64.bin",
+      "linux_x64_sha256": "8ece09d5cf8aaef4b362b1c0e1c20273f1dd11ad17bb8d462c41a5a119d5adde",
+      "default_port": 8080,
+      "supports_proxy": true
+    },
+    {
+      "id": "0itonexus",
+      "name": "0itonexus (Barramento Assíncrono)",
+      "pillar": "core",
+      "version": "0.1.0",
+      "description": "Barramento central de mensageria assíncrona entre nós e pilares em Rust Nativo",
+      "windows_x64_url": "",
+      "windows_x64_sha256": "",
+      "linux_x64_url": "https://eijuito.github.io/repo/0itonexus/0itonexus",
+      "linux_x64_sha256": "719b4befb540e5d17a325cc3700eb9c0bc49c0af5156c39b936c06e43125a069",
+      "default_port": 9000,
+      "supports_proxy": false
+    },
+    {
+      "id": "0itocore-supervisor",
+      "name": "0itocore-supervisor (Orquestrador)",
+      "pillar": "core",
+      "version": "0.3.1",
+      "description": "Orquestrador soberano de processos, reverse proxy e ciclo de vida do ecossistema 0ito",
+      "windows_x64_url": "https://eijuito.github.io/repo/0itocore-supervisor/0itocore-supervisor.exe",
+      "windows_x64_sha256": "c21ab01c80ec9fa129d260988fc179e8a40ab7c62e84d29d884c2df7d737aedb",
+      "linux_x64_url": "https://eijuito.github.io/repo/0itocore-supervisor/0itocore-supervisor",
+      "linux_x64_sha256": "97a189061d7f30ba84d9b9e5bebecbcfc23e4f388767fdce158cfa265d1b2666",
+      "default_port": 8000,
+      "supports_proxy": true
+    }
+  ]
+}
