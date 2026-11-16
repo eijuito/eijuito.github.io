@@ -23,10 +23,10 @@ PROJECT_URL="${REPO_BASE_URL}/${PROJECT_NAME}"
 FALLBACK_URL="${FALLBACK_BASE_URL}/${PROJECT_NAME}"
 DOWNLOAD_BASE_URL="${PROJECT_URL}"
 
-TARGET_ENV="${0ITO_ENV:-prod}"
+TARGET_ENV="prod"
 TARGET_PORT=""
 
-# Parse de argumentos rápidos
+# Parse de argumentos rápidos (Padrão: prod)
 for arg in "$@"; do
     case "$arg" in
         --dev)
@@ -310,12 +310,13 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=${INSTALL_DIR}
-ExecStart=${BIN_PATH} --config ${CONFIG_PATH}
+ExecStart=${BIN_PATH} --env ${TARGET_ENV} --config ${CONFIG_PATH}
 Restart=always
 RestartSec=5s
 LimitNOFILE=65536
 Environment=RUST_LOG=info
-Environment=0ITO_HOME=/opt/0ito
+Environment=0ITO_HOME=${ROOT_DIR}
+Environment=0ITO_ENV=${TARGET_ENV}
 
 # Isolamento e Segurança Básica
 ProtectSystem=full

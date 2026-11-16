@@ -1,4 +1,4 @@
-# ==============================================================================
+﻿# ==============================================================================
 # 0itocore-supervisor - Instalador / Atualizador Oficial para Windows (PowerShell)
 # Repositório: https://eijuito.github.io/repo/0itocore-supervisor/
 # ==============================================================================
@@ -16,18 +16,28 @@
 if (-not (Test-Path variable:Status)) { $Status = $false }
 if (-not (Test-Path variable:Uninstall)) { $Uninstall = $false }
 if (-not (Test-Path variable:Purge)) { $Purge = $false }
-if (-not (Test-Path variable:TargetEnv) -or [string]::IsNullOrWhiteSpace($TargetEnv)) { 
-    $TargetEnv = if ($env:0ITO_ENV) { $env:0ITO_ENV } else { "prod" }
-}
 
 # Suporte a argumentos passados via CLI caso executado como script local
 if ($args) {
     if ($args -contains "-Status" -or $args -contains "--status") { $Status = $true }
     if ($args -contains "-Uninstall" -or $args -contains "--uninstall") { $Uninstall = $true }
     if ($args -contains "-Purge" -or $args -contains "--purge") { $Purge = $true }
-    if ($args -contains "-Dev" -or $args -contains "--dev") { $TargetEnv = "dev" }
-    if ($args -contains "-Stage" -or $args -contains "--stage") { $TargetEnv = "stage" }
-    if ($args -contains "-Prod" -or $args -contains "--prod") { $TargetEnv = "prod" }
+    if ($args -contains "-Dev" -or $args -contains "--dev") { $Dev = $true }
+    if ($args -contains "-Stage" -or $args -contains "--stage") { $Stage = $true }
+    if ($args -contains "-Prod" -or $args -contains "--prod") { $Prod = $true }
+}
+
+# Detecção estrita de Ambiente Alvo:
+# O padrão oficial da esteira é SEMPRE "prod" (C:\0ito\, porta 8000).
+# Apenas entra em dev ou stage se explicitamente solicitado via $Dev = $true ou flag -Dev / -Stage.
+if ((Test-Path variable:Dev) -and $Dev) {
+    $TargetEnv = "dev"
+} elseif ((Test-Path variable:Stage) -and $Stage) {
+    $TargetEnv = "stage"
+} elseif ((Test-Path variable:Prod) -and $Prod) {
+    $TargetEnv = "prod"
+} elseif (-not (Test-Path variable:TargetEnv) -or [string]::IsNullOrWhiteSpace($TargetEnv)) {
+    $TargetEnv = "prod"
 }
 
 # Mapeamento do Diretório Raiz e Faixa de Portas por Ambiente
@@ -84,6 +94,9 @@ function Write-Banner {
     Write-Host "==================================================================" -ForegroundColor Cyan
     Write-Host "      0ITOCORE-SUPERVISOR - INSTALADOR & GERENCIADOR WINDOWS      " -ForegroundColor Cyan
     Write-Host "                 Ecossistema 0ito Sovereign Tech                  " -ForegroundColor Cyan
+    Write-Host "==================================================================" -ForegroundColor Cyan
+    Write-Host "  Ambiente Alvo: $EnvTitle (Porta $Port)" -ForegroundColor Yellow
+    Write-Host "  Diretório Raiz: $RootDir" -ForegroundColor Yellow
     Write-Host "==================================================================" -ForegroundColor Cyan
     Write-Host ""
 }
@@ -261,7 +274,7 @@ function Install-Files {
     Write-Host "[INFO] Instalando novo binário em $BinPath..." -ForegroundColor DarkCyan
     Copy-Item -Path $downloadedBin -Destination $BinPath -Force
 
-    # Criar config.json inicial se não existir
+    # Criar ou atualizar config.json garantindo portas e ambiente corretos
     if (-not (Test-Path $ConfigPath)) {
         Write-Host "[INFO] Criando arquivo de configuração padrão em $ConfigPath..." -ForegroundColor DarkCyan
         $defaultConfig = @"
@@ -277,7 +290,16 @@ function Install-Files {
         Write-Host "[SUCESSO] Configuração padrão criada (Ambiente: $TargetEnv, Porta $Port)." -ForegroundColor Green
     }
     else {
-        Write-Host "[INFO] Configuração existente preservada em $ConfigPath." -ForegroundColor Green
+        # Sincroniza ambiente e porta alvo mantendo daemons registrados intactos
+        try {
+            $cfgRaw = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
+            $cfgRaw.environment = $TargetEnv
+            $cfgRaw.http_port = [int]$Port
+            $cfgRaw | ConvertTo-Json -Depth 5 | Set-Content -Path $ConfigPath -Encoding UTF8
+            Write-Host "[INFO] Configuração sincronizada para Ambiente: $TargetEnv (Porta $Port) em $ConfigPath." -ForegroundColor Green
+        } catch {
+            Write-Host "[INFO] Configuração existente preservada em $ConfigPath." -ForegroundColor Green
+        }
     }
 
     # Adicionar bin ao PATH da máquina para uso direto via CLI
@@ -291,7 +313,7 @@ function Install-Files {
 function Configure-ScheduledTask {
     Write-Host "[INFO] Configurando inicialização persistente como Tarefa Agendada ($TaskName)..." -ForegroundColor DarkCyan
 
-    $action = New-ScheduledTaskAction -Execute $BinPath -Argument "--config `"$ConfigPath`"" -WorkingDirectory $InstallDir
+    $action = New-ScheduledTaskAction -Execute $BinPath -Argument "--env $TargetEnv --config `"$ConfigPath`"" -WorkingDirectory $InstallDir
     $triggerBoot = New-ScheduledTaskTrigger -AtStartup
     $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit 0
@@ -307,7 +329,7 @@ function Configure-ScheduledTask {
 
 function Verify-Health {
     Write-Host "[INFO] Aguardando inicialização do serviço e verificando health check na porta $Port..." -ForegroundColor DarkCyan
-    $retries = 10
+    $retries = 15
     $healthy = $false
 
     while ($retries -gt 0) {
