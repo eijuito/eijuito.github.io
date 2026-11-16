@@ -23,9 +23,12 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Constantes e Definições de Caminhos
-$RepoBaseUrl    = "https://eijuito.github.io/repo"
-$ProjectName    = "0itocore-supervisor"
-$ProjectUrl     = "$RepoBaseUrl/$ProjectName"
+$RepoBaseUrl     = "https://eijuito.github.io/repo"
+$FallbackBaseUrl = "https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo"
+$ProjectName     = "0itocore-supervisor"
+$ProjectUrl      = "$RepoBaseUrl/$ProjectName"
+$FallbackUrl     = "$FallbackBaseUrl/$ProjectName"
+$global:DownloadBaseUrl = $ProjectUrl
 
 $InstallDir     = "C:\0itocore-supervisor"
 $BinDir         = Join-Path $InstallDir "bin"
@@ -59,28 +62,48 @@ function Check-Administrator {
 }
 
 function Check-Connectivity {
-    Write-Host "[INFO] Verificando conectividade com o repositório público em $RepoBaseUrl..." -ForegroundColor DarkCyan
+    Write-Host "[INFO] Verificando conectividade com o repositório público..." -ForegroundColor DarkCyan
+    $tested = $false
+
+    # 1. Tentar Public Vault oficial via GitHub Pages
     try {
-        $req = [System.Net.WebRequest]::Create("$ProjectUrl/")
-        $req.Timeout = 8000
+        $req = [System.Net.WebRequest]::Create("$ProjectUrl/0itocore-supervisor.exe")
+        $req.Timeout = 5000
         $req.Method = "HEAD"
         $resp = $req.GetResponse()
+        if ($resp.StatusCode -eq 200) {
+            $global:DownloadBaseUrl = $ProjectUrl
+            $tested = $true
+            Write-Host "[SUCESSO] Repositório oficial (GitHub Pages) acessível com sucesso." -ForegroundColor Green
+        }
         $resp.Close()
-        Write-Host "[SUCESSO] Repositório público acessível com sucesso." -ForegroundColor Green
     }
     catch {
+        # Fallback para checagem rápida
+    }
+
+    # 2. Se Pages ainda não propagou ou deu 404, usar fallback resiliente (GitHub Raw)
+    if (-not $tested) {
         try {
-            $req2 = [System.Net.WebRequest]::Create("$RepoBaseUrl/")
-            $req2.Timeout = 8000
+            $req2 = [System.Net.WebRequest]::Create("$FallbackUrl/0itocore-supervisor.exe")
+            $req2.Timeout = 5000
             $req2.Method = "HEAD"
             $resp2 = $req2.GetResponse()
+            if ($resp2.StatusCode -eq 200) {
+                $global:DownloadBaseUrl = $FallbackUrl
+                $tested = $true
+                Write-Host "[SUCESSO] Repositório público conectado via espelho seguro (GitHub Raw CDN)." -ForegroundColor Green
+            }
             $resp2.Close()
-            Write-Host "[SUCESSO] Repositório público acessível com sucesso." -ForegroundColor Green
         }
         catch {
-            Write-Error "Falha ao conectar com $RepoBaseUrl. Verifique sua conexão à internet e DNS."
-            exit 1
+            # Se ambos falharem
         }
+    }
+
+    if (-not $tested) {
+        Write-Error "Falha ao conectar com $ProjectUrl e $FallbackUrl. Verifique sua conexão à internet e DNS."
+        exit 1
     }
 }
 
@@ -113,10 +136,10 @@ function Download-Artifacts {
     $global:TmpDir = Join-Path $env:TEMP ("0itocore-supervisor-install-" + [System.Guid]::NewGuid().ToString().Substring(0,8))
     New-Item -ItemType Directory -Path $global:TmpDir -Force | Out-Null
 
-    Write-Host "[INFO] Consultando artefatos e integridade criptográfica no Public Vault..." -ForegroundColor DarkCyan
-    $sumsUrl = "$ProjectUrl/SHA256SUMS"
+    Write-Host "[INFO] Consultando artefatos e integridade criptográfica no Public Vault ($global:DownloadBaseUrl)..." -ForegroundColor DarkCyan
+    $sumsUrl = "$global:DownloadBaseUrl/SHA256SUMS"
     $sumsFile = Join-Path $global:TmpDir "SHA256SUMS"
-    $binUrl = "$ProjectUrl/0itocore-supervisor.exe"
+    $binUrl = "$global:DownloadBaseUrl/0itocore-supervisor.exe"
     $targetDownloadedBin = Join-Path $global:TmpDir "0itocore-supervisor.exe"
 
     try {
@@ -131,8 +154,16 @@ function Download-Artifacts {
         Invoke-WebRequest -Uri $binUrl -OutFile $targetDownloadedBin -UseBasicParsing
     }
     catch {
-        Write-Error "Falha ao baixar $binUrl. Verifique se a release para Windows está disponível no vault."
-        exit 1
+        # Tentar download via fallback caso a URL original falhe
+        if ($global:DownloadBaseUrl -ne $FallbackUrl) {
+            Write-Warning "Tentando espelho de contingência em $FallbackUrl..."
+            $fallbackBin = "$FallbackUrl/0itocore-supervisor.exe"
+            Invoke-WebRequest -Uri $fallbackBin -OutFile $targetDownloadedBin -UseBasicParsing
+        }
+        else {
+            Write-Error "Falha ao baixar $binUrl. Verifique se a release para Windows está disponível no vault."
+            exit 1
+        }
     }
 
     if (Test-Path $sumsFile) {

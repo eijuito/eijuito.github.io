@@ -17,8 +17,11 @@ set -euo pipefail
 
 # Definições Globais de Diretórios e URLs
 REPO_BASE_URL="https://eijuito.github.io/repo"
+FALLBACK_BASE_URL="https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo"
 PROJECT_NAME="0itocore-supervisor"
 PROJECT_URL="${REPO_BASE_URL}/${PROJECT_NAME}"
+FALLBACK_URL="${FALLBACK_BASE_URL}/${PROJECT_NAME}"
+DOWNLOAD_BASE_URL="${PROJECT_URL}"
 
 INSTALL_DIR="/opt/0itocore-supervisor"
 BIN_DIR="${INSTALL_DIR}/bin"
@@ -81,16 +84,21 @@ check_privileges() {
 
 # 2. Verificação de Conectividade com o Repositório Público
 check_connectivity() {
-    info "Verificando conectividade com o repositório público em ${REPO_BASE_URL}..."
-    if ! curl -fsSI --connect-timeout 8 "${PROJECT_URL}/" > /dev/null 2>&1; then
-        # Tenta verificar a raiz caso a listagem de diretório retorne 403/404 em static pages
-        if ! curl -fsSI --connect-timeout 8 "${REPO_BASE_URL}/" > /dev/null 2>&1; then
-            error "Falha ao conectar com ${REPO_BASE_URL}."
-            error "Verifique sua conexão com a internet e resolução de DNS."
-            exit 1
-        fi
+    info "Verificando conectividade com o repositório público..."
+    if curl -fsSI --connect-timeout 5 "${PROJECT_URL}/0itocore-supervisor" > /dev/null 2>&1; then
+        DOWNLOAD_BASE_URL="${PROJECT_URL}"
+        success "Repositório público oficial (GitHub Pages) acessível com sucesso."
+    elif curl -fsSI --connect-timeout 5 "${FALLBACK_URL}/0itocore-supervisor" > /dev/null 2>&1; then
+        DOWNLOAD_BASE_URL="${FALLBACK_URL}"
+        success "Repositório público conectado via espelho seguro (GitHub Raw CDN)."
+    elif curl -fsSI --connect-timeout 5 "${REPO_BASE_URL}/" > /dev/null 2>&1; then
+        DOWNLOAD_BASE_URL="${PROJECT_URL}"
+        success "Repositório base acessível."
+    else
+        error "Falha ao conectar com ${PROJECT_URL} e ${FALLBACK_URL}."
+        error "Verifique sua conexão com a internet e resolução de DNS."
+        exit 1
     fi
-    success "Repositório público acessível com sucesso."
 }
 
 # 3. Detecção e Validação do Sistema Operacional e Arquitetura
@@ -150,21 +158,28 @@ download_artifacts() {
     TMP_DIR="$(mktemp -d -t 0itocore-supervisor-install-XXXXXX)"
     trap 'rm -rf "${TMP_DIR}"' EXIT
 
-    info "Consultando artefatos e integridade criptográfica no Public Vault..."
-    local sums_url="${PROJECT_URL}/SHA256SUMS"
+    info "Consultando artefatos e integridade criptográfica no Public Vault (${DOWNLOAD_BASE_URL})..."
+    local sums_url="${DOWNLOAD_BASE_URL}/SHA256SUMS"
     
     if ! curl -fsSL "${sums_url}" -o "${TMP_DIR}/SHA256SUMS"; then
-        error "Não foi possível obter ${sums_url}."
-        exit 1
+        warn "Arquivo SHA256SUMS não pôde ser baixado diretamente (${sums_url})."
     fi
 
-    # Determinar nome do artefato binário ou tarball
-    # Prioridade: 0itocore-supervisor (binário direto compatível)
-    local target_bin_url="${PROJECT_URL}/0itocore-supervisor"
+    # Determinar nome do artefato binário
+    local target_bin_url="${DOWNLOAD_BASE_URL}/0itocore-supervisor"
     info "Baixando binário oficial: ${target_bin_url}..."
     if ! curl -fsSL "${target_bin_url}" -o "${TMP_DIR}/0itocore-supervisor"; then
-        error "Falha no download do binário ${target_bin_url}."
-        exit 1
+        # Tentar fallback
+        if [[ "${DOWNLOAD_BASE_URL}" != "${FALLBACK_URL}" ]]; then
+            warn "Tentando espelho de contingência em ${FALLBACK_URL}..."
+            if ! curl -fsSL "${FALLBACK_URL}/0itocore-supervisor" -o "${TMP_DIR}/0itocore-supervisor"; then
+                error "Falha no download do binário em ambos os servidores."
+                exit 1
+            fi
+        else
+            error "Falha no download do binário ${target_bin_url}."
+            exit 1
+        fi
     fi
 
     chmod +x "${TMP_DIR}/0itocore-supervisor"
