@@ -12,13 +12,18 @@
 #   .\install.ps1 -Purge        # Remove completamente pastas, dados e configurações
 # ==============================================================================
 
-[CmdletBinding()]
-param(
-    [switch]$Status,
-    [switch]$Uninstall,
-    [switch]$Purge,
-    [string]$Port = "8000"
-)
+# Inicialização segura de variáveis compatível com Invoke-Expression (iex) e PowerShell 5.1 / 7+
+if (-not (Test-Path variable:Status)) { $Status = $false }
+if (-not (Test-Path variable:Uninstall)) { $Uninstall = $false }
+if (-not (Test-Path variable:Purge)) { $Purge = $false }
+if (-not (Test-Path variable:Port) -or [string]::IsNullOrWhiteSpace($Port)) { $Port = "8000" }
+
+# Suporte a argumentos passados via CLI caso executado como script local
+if ($args) {
+    if ($args -contains "-Status" -or $args -contains "--status") { $Status = $true }
+    if ($args -contains "-Uninstall" -or $args -contains "--uninstall") { $Uninstall = $true }
+    if ($args -contains "-Purge" -or $args -contains "--purge") { $Purge = $true }
+}
 
 $ErrorActionPreference = "Stop"
 
