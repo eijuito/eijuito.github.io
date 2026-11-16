@@ -16,14 +16,41 @@
 if (-not (Test-Path variable:Status)) { $Status = $false }
 if (-not (Test-Path variable:Uninstall)) { $Uninstall = $false }
 if (-not (Test-Path variable:Purge)) { $Purge = $false }
-if (-not (Test-Path variable:Port) -or [string]::IsNullOrWhiteSpace($Port)) { $Port = "8000" }
+if (-not (Test-Path variable:TargetEnv) -or [string]::IsNullOrWhiteSpace($TargetEnv)) { 
+    $TargetEnv = if ($env:0ITO_ENV) { $env:0ITO_ENV } else { "prod" }
+}
 
 # Suporte a argumentos passados via CLI caso executado como script local
 if ($args) {
     if ($args -contains "-Status" -or $args -contains "--status") { $Status = $true }
     if ($args -contains "-Uninstall" -or $args -contains "--uninstall") { $Uninstall = $true }
     if ($args -contains "-Purge" -or $args -contains "--purge") { $Purge = $true }
+    if ($args -contains "-Dev" -or $args -contains "--dev") { $TargetEnv = "dev" }
+    if ($args -contains "-Stage" -or $args -contains "--stage") { $TargetEnv = "stage" }
+    if ($args -contains "-Prod" -or $args -contains "--prod") { $TargetEnv = "prod" }
 }
+
+# Mapeamento do Diretório Raiz e Faixa de Portas por Ambiente
+switch ($TargetEnv.ToLower()) {
+    "dev" {
+        $RootDir = "C:\0itodev"
+        $DefaultPort = "18000"
+        $EnvTitle = "DESENVOLVIMENTO (DEV)"
+    }
+    "stage" {
+        $RootDir = "C:\0itostage"
+        $DefaultPort = "28000"
+        $EnvTitle = "HOMOLOGAÇÃO (STAGE)"
+    }
+    default {
+        $RootDir = "C:\0ito"
+        $DefaultPort = "8000"
+        $TargetEnv = "prod"
+        $EnvTitle = "PRODUÇÃO (PROD)"
+    }
+}
+
+if (-not (Test-Path variable:Port) -or [string]::IsNullOrWhiteSpace($Port)) { $Port = $DefaultPort }
 
 $ErrorActionPreference = "Stop"
 
@@ -32,7 +59,7 @@ try {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 } catch {}
 
-# Constantes e Definições de Caminhos
+# Constantes e Definições de Caminhos (Hierarquia Canônica do Ecossistema 0ito)
 $RepoBaseUrl     = "https://eijuito.github.io/repo"
 $FallbackBaseUrl = "https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo"
 $ProjectName     = "0itocore-supervisor"
@@ -40,7 +67,7 @@ $ProjectUrl      = "$RepoBaseUrl/$ProjectName"
 $FallbackUrl     = "$FallbackBaseUrl/$ProjectName"
 $global:DownloadBaseUrl = $ProjectUrl
 
-$InstallDir     = "C:\0itocore-supervisor"
+$InstallDir     = Join-Path $RootDir "0itocore\0itocore-supervisor"
 $BinDir         = Join-Path $InstallDir "bin"
 $ConfigDir      = Join-Path $InstallDir "config"
 $DataDir        = Join-Path $InstallDir "data"
@@ -51,7 +78,7 @@ $LogsDir        = Join-Path $InstallDir "logs"
 $BinPath        = Join-Path $BinDir "0itocore-supervisor.exe"
 $OldBinPath     = Join-Path $BinDir "0itocore-supervisor.exe.old"
 $ConfigPath     = Join-Path $ConfigDir "config.json"
-$TaskName       = "0itocore-supervisor"
+$TaskName       = if ($TargetEnv -eq "prod") { "0itocore-supervisor" } else { "0itocore-supervisor-$TargetEnv" }
 
 function Write-Banner {
     Write-Host "==================================================================" -ForegroundColor Cyan
@@ -240,13 +267,14 @@ function Install-Files {
         $defaultConfig = @"
 {
   "version": "0.1.0",
+  "environment": "$TargetEnv",
   "http_port": $Port,
   "vault_enabled": false,
   "processes": []
 }
 "@
         Set-Content -Path $ConfigPath -Value $defaultConfig -Encoding UTF8
-        Write-Host "[SUCESSO] Configuração padrão criada (Modo Nó, Porta $Port)." -ForegroundColor Green
+        Write-Host "[SUCESSO] Configuração padrão criada (Ambiente: $TargetEnv, Porta $Port)." -ForegroundColor Green
     }
     else {
         Write-Host "[INFO] Configuração existente preservada em $ConfigPath." -ForegroundColor Green

@@ -23,7 +23,46 @@ PROJECT_URL="${REPO_BASE_URL}/${PROJECT_NAME}"
 FALLBACK_URL="${FALLBACK_BASE_URL}/${PROJECT_NAME}"
 DOWNLOAD_BASE_URL="${PROJECT_URL}"
 
-INSTALL_DIR="/opt/0itocore-supervisor"
+TARGET_ENV="${0ITO_ENV:-prod}"
+TARGET_PORT=""
+
+# Parse de argumentos rápidos
+for arg in "$@"; do
+    case "$arg" in
+        --dev)
+            TARGET_ENV="dev"
+            ;;
+        --stage)
+            TARGET_ENV="stage"
+            ;;
+        --prod)
+            TARGET_ENV="prod"
+            ;;
+        --port=*)
+            TARGET_PORT="${arg#*=}"
+            ;;
+    esac
+done
+
+case "${TARGET_ENV}" in
+    dev)
+        ROOT_DIR="/opt/0itodev"
+        DEFAULT_PORT="18000"
+        ;;
+    stage)
+        ROOT_DIR="/opt/0itostage"
+        DEFAULT_PORT="28000"
+        ;;
+    *)
+        ROOT_DIR="/opt/0ito"
+        DEFAULT_PORT="8000"
+        TARGET_ENV="prod"
+        ;;
+esac
+
+HTTP_PORT="${TARGET_PORT:-${DEFAULT_PORT}}"
+
+INSTALL_DIR="${ROOT_DIR}/0itocore/0itocore-supervisor"
 BIN_DIR="${INSTALL_DIR}/bin"
 CONFIG_DIR="${INSTALL_DIR}/config"
 DATA_DIR="${INSTALL_DIR}/data"
@@ -34,7 +73,11 @@ LOGS_DIR="${INSTALL_DIR}/logs"
 BIN_PATH="${BIN_DIR}/0itocore-supervisor"
 OLD_BIN_PATH="${BIN_DIR}/0itocore-supervisor.old"
 CONFIG_PATH="${CONFIG_DIR}/config.json"
-SERVICE_NAME="0itocore-supervisor.service"
+SERVICE_NAME="0itocore-supervisor"
+if [[ "${TARGET_ENV}" != "prod" ]]; then
+    SERVICE_NAME="0itocore-supervisor-${TARGET_ENV}"
+fi
+SERVICE_NAME="${SERVICE_NAME}.service"
 SYSTEMD_PATH="/etc/systemd/system/${SERVICE_NAME}"
 GLOBAL_SYMLINK="/usr/local/bin/0itocore-supervisor"
 
@@ -242,13 +285,14 @@ install_files() {
         cat <<EOF > "${CONFIG_PATH}"
 {
   "version": "${NEW_VERSION#v}",
-  "http_port": 8000,
+  "environment": "${TARGET_ENV}",
+  "http_port": ${HTTP_PORT},
   "vault_enabled": false,
   "processes": []
 }
 EOF
         chmod 640 "${CONFIG_PATH}"
-        success "Configuração inicial criada (Modo Nó, Porta 8000)."
+        success "Configuração inicial criada (Ambiente: ${TARGET_ENV}, Porta ${HTTP_PORT})."
     else
         info "Configuração existente preservada em ${CONFIG_PATH}."
     fi
@@ -289,12 +333,12 @@ EOF
 
 # 9. Verificação de Saúde Pós-Instalação (Health Check)
 verify_health() {
-    info "Aguardando inicialização do serviço e verificando health check na porta 8000..."
+    info "Aguardando inicialização do serviço e verificando health check na porta ${HTTP_PORT}..."
     local retries=10
     local success=0
 
     while [[ ${retries} -gt 0 ]]; do
-        if curl -fsSL http://127.0.0.1:8000/health > /dev/null 2>&1; then
+        if curl -fsSL "http://127.0.0.1:${HTTP_PORT}/health" > /dev/null 2>&1; then
             success=1
             break
         fi
@@ -303,9 +347,9 @@ verify_health() {
     done
 
     if [[ ${success} -eq 1 ]]; then
-        success "Health check aprovado! O 0itocore-supervisor está ativo e operando."
+        success "Health check aprovado! O 0itocore-supervisor está ativo e operando em [${TARGET_ENV}]."
     else
-        warn "O endpoint de healthcheck http://127.0.0.1:8000/health ainda não respondeu."
+        warn "O endpoint de healthcheck http://127.0.0.1:${HTTP_PORT}/health ainda não respondeu."
         warn "Verifique o log com: journalctl -u ${SERVICE_NAME} -n 50"
     fi
 }
