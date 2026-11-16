@@ -27,6 +27,11 @@ if ($args) {
 
 $ErrorActionPreference = "Stop"
 
+# Garantir suporte a TLS 1.2 e TLS 1.3 em qualquer versão do Windows 10 / PowerShell 5.1+
+try {
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
+} catch {}
+
 # Constantes e Definições de Caminhos
 $RepoBaseUrl     = "https://eijuito.github.io/repo"
 $FallbackBaseUrl = "https://raw.githubusercontent.com/eijuito/eijuito.github.io/main/repo"
