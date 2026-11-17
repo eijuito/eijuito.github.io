@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-17T01:01:44Z",
+  "updated_at": "2026-11-17T04:19:00Z",
   "plugins": [
     {
       "id": "0itoiot-kwiek-autogate",
@@ -38,6 +38,19 @@
       "linux_x64_url": "https://eijuito.github.io/repo/0itocore-supervisor/0itocore-supervisor",
       "linux_x64_sha256": "97a189061d7f30ba84d9b9e5bebecbcfc23e4f388767fdce158cfa265d1b2666",
       "default_port": 8000,
+      "supports_proxy": true
+    },
+    {
+      "id": "0itocore-gates-googlegateway",
+      "name": "Google Gateway (Sheets OAuth2)",
+      "pillar": "core",
+      "version": "0.1.0",
+      "description": "Gateway determinístico (Go) para Google Sheets via OAuth2 de Usuário + Nexus SSE",
+      "windows_x64_url": "https://eijuito.github.io/repo/0itocore-gates-googlegateway/0itocore-gates-googlegateway.exe",
+      "windows_x64_sha256": "010ca7fe438bac944401300c5d0dbd68232d63c2d8109aa0e725e5060f0590db",
+      "linux_x64_url": "https://eijuito.github.io/repo/0itocore-gates-googlegateway/0itocore-gates-googlegateway",
+      "linux_x64_sha256": "fd9f09c5c7449e651e825f2af809a4665e05d98e73fe3ec2a43a4ebe5bdf2bd9",
+      "default_port": 8082,
       "supports_proxy": true
     }
   ]
