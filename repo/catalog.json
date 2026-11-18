@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-17T04:35:08Z",
+  "updated_at": "2026-11-18T04:48:52Z",
   "plugins": [
     {
       "id": "0itoiot-kwiek-autogate",
@@ -42,14 +42,14 @@
     },
     {
       "id": "0itocore-gates-googlegateway",
-      "name": "Google Gateway (Sheets OAuth2)",
+      "name": "Google Gateway (Workspace OAuth2)",
       "pillar": "core",
-      "version": "0.1.0",
-      "description": "Gateway determinístico (Go) para Google Sheets via OAuth2 de Usuário + Nexus SSE",
+      "version": "0.1.1",
+      "description": "Gateway determinístico (Go) para Google Sheets, Calendar, Gmail e YouTube via OAuth2 + Nexus SSE",
       "windows_x64_url": "https://eijuito.github.io/repo/0itocore-gates-googlegateway/0itocore-gates-googlegateway.exe",
-      "windows_x64_sha256": "7714d76da8875f6df753508cd26dfe7f4b52afe93e7100f854c3c014337870cf",
+      "windows_x64_sha256": "b26f233218996dabc8a81e8f481317fb62af4750d4fda5e404bfd9fc9d72c46f",
       "linux_x64_url": "https://eijuito.github.io/repo/0itocore-gates-googlegateway/0itocore-gates-googlegateway",
-      "linux_x64_sha256": "0638c22cebe073e3320ac01fcef0970e8bd364aaddecbba950c12135f1d38d25",
+      "linux_x64_sha256": "b74c8a9d52d98000a664e8d676884bf45b3eabdabde014baf96588bf002d6846",
       "default_port": 8082,
       "supports_proxy": true
     }
