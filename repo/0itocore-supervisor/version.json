@@ -1,9 +1,9 @@
 {
-  "version": "0.10.8",
-  "published_at": "2026-11-27T23:06:18Z",
+  "version": "0.10.9",
+  "published_at": "2026-11-27T23:24:22Z",
   "windows_x64_url": "https://eijuito.github.io/repo/0itocore-supervisor/0itocore-supervisor.exe",
-  "windows_x64_sha256": "082a3bd49f40aa0004cd4740f7074dd32ef5bd30889eecad6897323e46c85066",
+  "windows_x64_sha256": "3e4e10dc65cfc59b59a2997268fda5c3e30619f3afbfcf2b20f9b72f649ee26d",
   "linux_x64_url": "https://eijuito.github.io/repo/0itocore-supervisor/0itocore-supervisor",
-  "linux_x64_sha256": "4e5ec484960f5f150901ea18fc30f3b0d15f7c140d0dab902989cbed21cca57c",
-  "release_notes": "Publicacao automatizada 0itocore-supervisor v0.10.8"
+  "linux_x64_sha256": "1a67abc267a3f8a7e111caa4045c6248aafcfe454fb16dabd25445403434a9f8",
+  "release_notes": "Publicacao automatizada 0itocore-supervisor v0.10.9"
 }
