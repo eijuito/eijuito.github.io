@@ -208,14 +208,18 @@ download_artifacts() {
         warn "Arquivo SHA256SUMS não pôde ser baixado diretamente (${sums_url})."
     fi
 
-    # Determinar nome do artefato binário
-    local target_bin_url="${DOWNLOAD_BASE_URL}/0itocore-supervisor"
-    info "Baixando binário oficial: ${target_bin_url}..."
+    # Determinar nome do artefato binário conforme arquitetura (x64 vs arm64)
+    local remote_bin_name="0itocore-supervisor"
+    if [[ "${ARCH_NAME}" == "arm64" ]]; then
+        remote_bin_name="0itocore-supervisor-arm64"
+    fi
+    local target_bin_url="${DOWNLOAD_BASE_URL}/${remote_bin_name}"
+    info "Baixando binário oficial (${ARCH_NAME}): ${target_bin_url}..."
     if ! curl -fsSL "${target_bin_url}" -o "${TMP_DIR}/0itocore-supervisor"; then
         # Tentar fallback
         if [[ "${DOWNLOAD_BASE_URL}" != "${FALLBACK_URL}" ]]; then
             warn "Tentando espelho de contingência em ${FALLBACK_URL}..."
-            if ! curl -fsSL "${FALLBACK_URL}/0itocore-supervisor" -o "${TMP_DIR}/0itocore-supervisor"; then
+            if ! curl -fsSL "${FALLBACK_URL}/${remote_bin_name}" -o "${TMP_DIR}/0itocore-supervisor"; then
                 error "Falha no download do binário em ambos os servidores."
                 exit 1
             fi
@@ -230,9 +234,9 @@ download_artifacts() {
     # Validar integridade SHA256 se o arquivo estiver listado em SHA256SUMS
     info "Verificando integridade SHA256 dos artefatos baixados..."
     cd "${TMP_DIR}"
-    if grep -E '0itocore-supervisor$' SHA256SUMS > /dev/null 2>&1; then
+    if grep -E " ${remote_bin_name}$" SHA256SUMS > /dev/null 2>&1; then
         local expected_hash
-        expected_hash="$(grep -E '0itocore-supervisor$' SHA256SUMS | awk '{print $1}')"
+        expected_hash="$(grep -E " ${remote_bin_name}$" SHA256SUMS | awk '{print $1}')"
         local calculated_hash
         calculated_hash="$(sha256sum 0itocore-supervisor | awk '{print $1}')"
 
